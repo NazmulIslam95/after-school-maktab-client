@@ -1,19 +1,21 @@
 import Navbar from "../../../Components/Navbar/Navbar";
-import Footer from "../../../Components/Footer/Footer";
 import HomeBanner from "../../../Components/HomeBanner/HomeBanner";
 import IntroSec from "./IntroSec";
+import Footer from "../../../Components/Footer/Footer";
+import Courses from "./Courses";
+import ChooseUs from "./ChooseUs";
 
 const Home = () => {
   return (
-    <div>
+    <div className="min-h-[200vh]">
       <Navbar />
       <HomeBanner />
       <IntroSec />
+      <Courses />
+      <ChooseUs></ChooseUs>
       <Footer />
     </div>
   );
 };
 
 export default Home;
-// This is the Home component for the application.
-// It serves as the landing page and displays a simple message.

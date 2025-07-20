@@ -37,12 +37,12 @@ const HomeBanner = () => {
               After School Maktab is an ISO certified educational institution of
               international standards Teaching Online Since 2003
             </p>
-            <button className="bg-yellow-400 text-white px-6 py-2 rounded-full font-semibold hover:bg-yellow-300 transition">
+            <button className=" bg-[#0d3e93] text-white px-6 py-2 rounded-full font-semibold hover:bg-[#082f72] transition">
               Explore Courses
             </button>
           </div>
 
-          <div className="hidden md:block absolute bottom-0 right-0 w-48 h-48 md:w-xl md:h-80 bg-[#ffb606] rounded-tr-[60px] md:rounded-tl-full md:rounded-bl-full z-0" />
+          <div className="hidden md:block absolute bottom-0 right-0 w-48 h-48 md:w-xl md:h-80 bg-[#082f72] rounded-tr-[60px] md:rounded-tl-full md:rounded-bl-full z-0" />
           {/* Right Visual Section */}
           <div className="md:w-1/2 relative flex justify-center mt-12 md:mt-48">
             {/* Yellow Box in Bottom Left */}
@@ -62,7 +62,7 @@ const HomeBanner = () => {
       {/* Scroll Down Indicator */}
       <a
         href="#next-section"
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce text-2xl text-yellow-400 transition z-20"
+        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce text-2xl text-[#ffff] transition z-20"
       >
         <FaArrowDownLong />
       </a>
