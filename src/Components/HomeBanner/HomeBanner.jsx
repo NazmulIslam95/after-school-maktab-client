@@ -6,13 +6,13 @@ const HomeBanner = () => {
     <div className="relative h-screen w-full overflow-hidden font-serif">
       {/* Background Image */}
       <img
-        src="https://i.ibb.co/fVwXd7gR/cordoba-182842.jpg"
+        src="https://plus.unsplash.com/premium_photo-1677013623482-6d71ca2dc71a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="Banner"
         className="w-full h-full object-cover"
       />
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black opacity-70" />
+      <div className="absolute inset-0 bg-black opacity-50" />
 
       {/* Banner Content */}
       <div className="absolute inset-0 z-10 mt-32 flex items-center justify-center px-4">
@@ -37,7 +37,7 @@ const HomeBanner = () => {
               After School Maktab is an ISO certified educational institution of
               international standards Teaching Online Since 2003
             </p>
-            <button className=" bg-[#0d3e93] text-white px-6 py-2 rounded-full font-semibold hover:bg-[#082f72] transition">
+            <button className="px-6 py-2 rounded-full my-4  bg-[#0d3e93] text-white font-semibold transition-colors duration-300 ease-in-out border border-transparent hover:bg-transparent hover:border-white">
               Explore Courses
             </button>
           </div>
@@ -50,7 +50,7 @@ const HomeBanner = () => {
             {/* Student Image overlapping box */}
             <div className="hidden md:block relative -mt-24 md:-mt-32 z-10">
               <img
-                src="https://naudummy.com/darsgah/wp-content/uploads/2024/04/hero-img-3.jpg"
+                src="https://images.unsplash.com/photo-1629273229214-d96be4552b9a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Students"
                 className="w-40 md:w-xl rounded-full shadow-xl"
               />

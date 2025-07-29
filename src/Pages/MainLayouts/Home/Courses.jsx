@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
 import CourseCard from "../../../Components/CourseCard/CourseCard";
-import coursesData from "../../../../public/courses.json";
 import Slider from "react-slick";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import TitleSec from "../../../Components/TitleSec/TitleSec";
+import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import { AuthContext } from "../../../Providers/AuthProvider";
 
 const Courses = () => {
   const [featuredCourses, setFeaturedCourses] = useState([]);
   const [showBg, setShowBg] = useState(false);
+  const axiosPublic = useAxiosPublic();
 
   useEffect(() => {
-    const featured = coursesData.filter((course) => course.featured === true);
-    setFeaturedCourses(featured);
+    // Fetch featured courses
+    axiosPublic
+      .get("/allCourses")
+      .then((res) => {
+        const featured = res.data.filter((course) => course.featured === true);
+        setFeaturedCourses(featured);
+      })
+      .catch((error) => console.error("Failed to load courses:", error));
 
     // Hide background image on small screens
     const handleResize = () => {
@@ -22,7 +30,7 @@ const Courses = () => {
     handleResize(); // Call initially
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  });
 
   const settings = {
     dots: true,
@@ -45,40 +53,22 @@ const Courses = () => {
 
   return (
     <div
-      className={`pb-12  ${showBg ? "bg-cover " : "bg-white"}`}
+      className={`pb-12 ${showBg ? "bg-cover " : "bg-white"}`}
       style={{
         backgroundImage: showBg
           ? `url('https://naudummy.com/darsgah/wp-content/uploads/2024/04/background-img.jpg')`
           : "none",
       }}
     >
-      {/* Top Section */}
-      <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">
-        <img
-          src="https://i.ibb.co/twsWp4Fd/logo-nameless.png"
-          alt="Logo"
-          className="w-16"
-        />
-        <p className="text-[#6a6a6a] text-base md:text-lg font-medium font-serif">
-          Welcome To The After School Maktab
-        </p>
-        <h1 className="text-[#6a6a6a] text-3xl md:text-4xl font-bold font-serif leading-snug">
-          Institute <span className="text-black">Focuses on Quality</span>
-          <br className="hidden md:block" />
-          Islamic Education
-        </h1>
-      </div>
+      <TitleSec
+        subTitle="Welcome To The After School Maktab"
+        title="Our featured Islamic Courses"
+      />
 
-      {/* Courses Section */}
-      {/* <div className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {featuredCourses.map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
-      </div> */}
       <div className="max-w-6xl mx-auto px-4">
         <Slider {...settings}>
           {featuredCourses.map((course) => (
-            <div key={course.id} className="px-2">
+            <div key={course._id} className="px-2">
               <CourseCard course={course} />
             </div>
           ))}

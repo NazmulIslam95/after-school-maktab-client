@@ -1,8 +1,13 @@
 [
     {
-        "id": 1,
-        "name": "তাজভীদ ও সহীহ কুরআন শিক্ষা",
-        "description": "সহীহ তাজভীদ সহ কুরআন পাঠ শেখার কোর্স",
+        "name": {
+            "bn": "তাজভীদ ও সহীহ কুরআন শিক্ষা",
+            "en": ""
+        },
+        "description": {
+            "bn": "সহীহ তাজভীদ সহ কুরআন পাঠ শেখার কোর্স",
+            "en": ""
+        },
         "image": "https://i.ibb.co/jvPML7Xr/online-quran-teaching.png",
         "tutor": "মাওলানা আহমদ হাসান",
         "type": "1-to-1",
@@ -28,9 +33,14 @@
         }
     },
     {
-        "id": 2,
-        "name": "কুরআন হিফয কোর্স",
-        "description": "পুরো কুরআন হিফয করার জন্য ১:১ ভিত্তিক কোর্স",
+        "name": {
+            "bn": "কুরআন হিফয কোর্স",
+            "en": ""
+        },
+        "description": {
+            "bn": "পুরো কুরআন হিফয করার জন্য ১:১ ভিত্তিক কোর্স",
+            "en": ""
+        },
         "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/islamic-courses-3-qnccq8zkp8v844q8nor0qmsa1fq8gofl4hdf1ibw6g.jpg",
         "tutor": "হাফিজ মাওলানা রাকিব",
         "type": "1-to-1",
@@ -56,9 +66,14 @@
         }
     },
     {
-        "id": 3,
-        "name": "বিশেষ সুরা হিফয",
-        "description": "ছোট ছোট গুরুত্বপূর্ন সূরা মুখস্থ করার কোর্স",
+        "name": {
+            "bn": "বিশেষ সুরা হিফয",
+            "en": ""
+        },
+        "description": {
+            "bn": "ছোট ছোট গুরুত্বপূর্ন সূরা মুখস্থ করার কোর্স",
+            "en": ""
+        },
         "image": "https://i.ibb.co/jvPML7Xr/online-quran-teaching.png",
         "tutor": "হাফিজ শামসুদ্দিন",
         "type": "1-to-1",
@@ -84,9 +99,14 @@
         }
     },
     {
-        "id": 4,
-        "name": "আমপাড়া হিফয",
-        "description": "আমপাড়া হিফয করার জন্য পর্যায়ক্রমিক শিক্ষা",
+        "name": {
+            "bn": "আমপাড়া হিফয",
+            "en": ""
+        },
+        "description": {
+            "bn": "আমপাড়া হিফয করার জন্য পর্যায়ক্রমিক শিক্ষা",
+            "en": ""
+        },
         "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/islamic-courses-4-qnccqcqxgl0dekks1qdj0lu4ez7pbguigzzcym6bhk.jpg",
         "tutor": "হাফিজ সাইফুল্লাহ",
         "type": "1-to-1",
@@ -112,9 +132,14 @@
         }
     },
     {
-        "id": 5,
-        "name": "আরবি ভাষা কোর্স",
-        "description": "আল কুরআন বুঝার জন্য আরবি ভাষা শিক্ষা",
+        "name": {
+            "bn": "আরবি ভাষা কোর্স",
+            "en": ""
+        },
+        "description": {
+            "bn": "আল কুরআন বুঝার জন্য আরবি ভাষা শিক্ষা",
+            "en": ""
+        },
         "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/blog-7-q5vx7rbv010rflp44plpfd8tcataw4bjsmm7ci9dbc.jpg",
         "tutor": "মাওলানা হাসিবুর রহমান",
         "type": "batch",
@@ -127,9 +152,14 @@
         "price": 500
     },
     {
-        "id": 6,
-        "name": "প্রোডাক্টিভ রমাদ্বান",
-        "description": "রমাদ্বান মাসকে আরও প্রোডাক্টিভ করতে সহায়ক কোর্স",
+        "name": {
+            "bn": "প্রোডাক্টিভ রমাদ্বান",
+            "en": ""
+        },
+        "description": {
+            "bn": "রমাদ্বান মাসকে আরও প্রোডাক্টিভ করতে সহায়ক কোর্স",
+            "en": ""
+        },
         "image": "https://example.com/ramadan.jpg",
         "tutor": "উস্তাদ সিফাত",
         "type": "batch",
@@ -142,9 +172,14 @@
         "price": 500
     },
     {
-        "id": 7,
-        "name": "নবীজীবন (সিরাহ)",
-        "description": "প্রিয় নবী (সা:) জীবনীভিত্তিক কোর্স",
+        "name": {
+            "bn": "নবীজীবন (সিরাহ)",
+            "en": ""
+        },
+        "description": {
+            "bn": "প্রিয় নবী (সা:) জীবনীভিত্তিক কোর্স",
+            "en": ""
+        },
         "image": "https://example.com/seerah.jpg",
         "tutor": "মুফতি তানভীর",
         "type": "batch",
@@ -157,9 +192,14 @@
         "price": 500
     },
     {
-        "id": 8,
-        "name": "কুরআন তাফসীর",
-        "description": "আল কুরআনের তাফসীর ভিত্তিক গভীর অধ্যয়ন",
+        "name": {
+            "bn": "কুরআন তাফসীর",
+            "en": ""
+        },
+        "description": {
+            "bn": "আল কুরআনের তাফসীর ভিত্তিক গভীর অধ্যয়ন",
+            "en": ""
+        },
         "image": "https://example.com/tafsir.jpg",
         "tutor": "মাওলানা কাওছার",
         "type": "batch",
@@ -172,9 +212,14 @@
         "price": 500
     },
     {
-        "id": 9,
-        "name": "ডিপ্লোমা ইন ইসলামিক স্টাডিজ",
-        "description": "ইসলামিক স্টাডিজের উপর একটি সমন্বিত ডিপ্লোমা কোর্স",
+        "name": {
+            "bn": "ডিপ্লোমা ইন ইসলামিক স্টাডিজ",
+            "en": ""
+        },
+        "description": {
+            "bn": "ইসলামিক স্টাডিজের উপর একটি সমন্বিত ডিপ্লোমা কোর্স",
+            "en": ""
+        },
         "image": "https://example.com/diploma.jpg",
         "tutor": "মুফতি হাফিজ",
         "type": "batch",
@@ -187,9 +232,14 @@
         "price": 500
     },
     {
-        "id": 10,
-        "name": "সিরাহ এন্ড আকিদা ফর কিডস",
-        "description": "বাচ্চাদের জন্য সহজ ভাষায় সিরাহ ও আকিদা শিক্ষা",
+        "name": {
+            "bn": "সিরাহ এন্ড আকিদা ফর কিডস",
+            "en": ""
+        },
+        "description": {
+            "bn": "বাচ্চাদের জন্য সহজ ভাষায় সিরাহ ও আকিদা শিক্ষা",
+            "en": ""
+        },
         "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/islamic-courses-2-qnccqk9mz9anzg9uttmjkjxt626n11od6178stv63s.jpg",
         "tutor": "উস্তাদ আসিফ",
         "type": "batch",

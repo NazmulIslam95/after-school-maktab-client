@@ -12,8 +12,8 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import useAxiosPublic from "../CustomHooks/useAxiosPublic";
 import { app } from "../firebase/firebase.config";
-import useAxiosPublic from "./../CustomHooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -55,6 +55,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      console.log("Current User:", currentUser);
 
       if (currentUser) {
         const userInfo = { email: currentUser.email };

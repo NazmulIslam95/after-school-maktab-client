@@ -1,0 +1,132 @@
+[
+    {
+        "name": "Mufti Abdullah Al-Mahmud",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-4-1-qmkai2r6cm2tj7vfdqvc5h8rtaqtx9sta5ou43gs64.jpg",
+        "expertise": [
+            "Fiqh",
+            "Hadith"
+        ],
+        "description": "Senior Islamic scholar with 15+ years of experience in Fiqh and Hadith. Known for his deep knowledge and practical jurisprudence approach.",
+        "social": {
+            "facebook": "https://facebook.com/mufti.abdullah",
+            "twitter": "https://twitter.com/mufti_abdullah",
+            "youtube": "https://youtube.com/@MuftiAbdullah"
+        }
+    },
+    {
+        "name": "Ustadh Fatima Binte Karim",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-7-1-qmkai8e7hmajgvn8gtb3kftjdlz17gf7axlqzr8f4s.jpg",
+        "expertise": [
+            "Tajweed",
+            "Quran Tafsir"
+        ],
+        "description": "Tajweed and Tafsir specialist, passionate about connecting youth with Quran. 10 years of teaching experience in Islamic institutions.",
+        "social": {
+            "facebook": "https://facebook.com/ustadh.fatima",
+            "instagram": "https://instagram.com/ustadh.fatima",
+            "youtube": "https://youtube.com/@UstadhFatima"
+        }
+    },
+    {
+        "name": "Sheikh Imran Hossain",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-11-qmkaigur74m4dday3eyqovooq2tc4qcsc3h4b8vvks.jpg",
+        "expertise": [
+            "Aqidah",
+            "Seerah"
+        ],
+        "description": "Islamic historian and motivational speaker. Teaches Aqidah and Seerah with clarity and inspiration. Over 12 years of experience.",
+        "social": {
+            "facebook": "https://facebook.com/sheikh.imran",
+            "twitter": "https://twitter.com/sheikh_imran"
+        }
+    },
+    {
+        "name": "Maulana Kamal Uddin",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-9-qmkaic5k8yforbhruuxluevdr5gi28u4ng7owv2ufw.jpg",
+        "expertise": [
+            "Arabic Grammar",
+            "Tafsir"
+        ],
+        "description": "Arabic linguist and Tafsir teacher. Focused on teaching classical texts with modern understanding.",
+        "social": {
+            "facebook": "https://facebook.com/maulana.kamal"
+        }
+    },
+    {
+        "name": "Ustadh Zainab Akter",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-7-1-qmkai8e7hmajgvn8gtb3kftjdlz17gf7axlqzr8f4s.jpg",
+        "expertise": [
+            "Islamic Etiquette",
+            "Akhlaq"
+        ],
+        "description": "Instructor of Islamic morals and manners. Engaging sessions for children and young girls. Focus on character development.",
+        "social": {
+            "facebook": "https://facebook.com/zainab.akter",
+            "instagram": "https://instagram.com/zainab.akter"
+        }
+    },
+    {
+        "name": "Mufti Saad Rahman",
+        "image": "/images/teachers/saad.jpg",
+        "expertise": [
+            "Fiqh",
+            "Islamic Law"
+        ],
+        "description": "Specialist in contemporary Islamic rulings. Helps students navigate modern-day issues through traditional Fiqh.",
+        "social": {
+            "facebook": "https://facebook.com/mufti.saad",
+            "linkedin": "https://linkedin.com/in/muftisaad"
+        }
+    },
+    {
+        "name": "Sheikh Hasan Rumi",
+        "image": "/images/teachers/rumi.jpg",
+        "expertise": [
+            "Hadith",
+            "Usul al-Hadith"
+        ],
+        "description": "Hadith sciences expert with a focus on authenticity and narration chains. Teaches Sahih books with ijazah.",
+        "social": {
+            "facebook": "https://facebook.com/hasan.rumi",
+            "youtube": "https://youtube.com/@HasanRumi"
+        }
+    },
+    {
+        "name": "Ustadh Ayesha Sultana",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-7-1-qmkai8e7hmajgvn8gtb3kftjdlz17gf7axlqzr8f4s.jpg",
+        "expertise": [
+            "Quran Memorization",
+            "Tajweed"
+        ],
+        "description": "Hafiza and Tajweed mentor. Guides students in memorization techniques and correct pronunciation.",
+        "social": {
+            "facebook": "https://facebook.com/ayesha.sultana",
+            "instagram": "https://instagram.com/ustadhayesha"
+        }
+    },
+    {
+        "name": "Maulana Rafiq Al-Huda",
+        "image": "/images/teachers/rafiq.jpg",
+        "expertise": [
+            "Aqidah",
+            "Islamic History"
+        ],
+        "description": "Passionate about building Islamic awareness through stories from Islamic civilization. Uses interactive teaching methods.",
+        "social": {
+            "facebook": "https://facebook.com/rafiq.alhuda"
+        }
+    },
+    {
+        "name": "Muallimah Nur Jahan",
+        "image": "https://naudummy.com/darsgah/wp-content/uploads/bfi_thumb/team-7-1-qmkai8e7hmajgvn8gtb3kftjdlz17gf7axlqzr8f4s.jpg",
+        "expertise": [
+            "Women in Islam",
+            "Islamic Parenting"
+        ],
+        "description": "Empowers women with Islamic knowledge. Conducts parenting workshops and women-only sessions.",
+        "social": {
+            "facebook": "https://facebook.com/muallimah.nurjahan",
+            "instagram": "https://instagram.com/nurjahan"
+        }
+    }
+]

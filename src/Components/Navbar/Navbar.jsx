@@ -1,14 +1,50 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { WiSunrise } from "react-icons/wi";
 import { LuSunMoon } from "react-icons/lu";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { FaFacebookF, FaYoutube } from "react-icons/fa";
+import axios from "axios";
+import { CiSettings, CiUser } from "react-icons/ci";
+import { AuthContext } from "../../Providers/AuthProvider";
+import useAdmin from "./../../CustomHooks/useAdmin";
+import { RxDashboard } from "react-icons/rx";
+import useTutor from "../../CustomHooks/useTutor";
 
 const Navbar = () => {
+  const { user, loading } = useContext(AuthContext);
+  const [isAdmin, isLoading] = useAdmin();
+  const [isTutor] = useTutor();
   const [scrolled, setScrolled] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [sunTimes, setSunTimes] = useState({ sunrise: "", sunset: "" });
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      try {
+        const response = await axios.get(
+          `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`
+        );
+        const { sunrise, sunset } = response.data.results;
+
+        // Convert UTC to local time
+        const sunriseLocal = new Date(sunrise).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        const sunsetLocal = new Date(sunset).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        setSunTimes({ sunrise: sunriseLocal, sunset: sunsetLocal });
+      } catch (error) {
+        console.error("Failed to fetch sun times", error);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,10 +58,10 @@ const Navbar = () => {
     `relative inline-block font-serif transition duration-300 group
    text-[#2e3192] hover:text-[#1b1d46]
    before:content-[''] before:absolute before:left-0 before:-bottom-1
-   before:h-[2px] before:bg-[#1b1d46] before:transition-all before:duration-300 before:ease-in-out
+   before:h-[1.5px] before:bg-[#1b1d46] before:transition-all before:duration-300 before:ease-in-out
    ${
      isActive
-       ? "before:w-full text-[#1b1d46]"
+       ? "before:w-full text-[#2e3192]"
        : "before:w-0 group-hover:before:w-full"
    }`;
 
@@ -51,6 +87,59 @@ const Navbar = () => {
       </NavLink>
     </>
   );
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      try {
+        const response = await axios.get(
+          `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`
+        );
+        const { sunrise, sunset } = response.data.results;
+
+        // Convert UTC to local time
+        const sunriseLocal = new Date(sunrise).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        const sunsetLocal = new Date(sunset).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        setSunTimes({ sunrise: sunriseLocal, sunset: sunsetLocal });
+      } catch (error) {
+        console.error("Failed to fetch sun times", error);
+      }
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-between">
+        {/* Nav items skeleton */}
+        <div className="flex space-x-4">
+          {[1, 2, 3].map((_, idx) => (
+            <div
+              key={idx}
+              className="w-16 h-4 bg-gray-300 rounded animate-pulse"
+            ></div>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <p className="mx-4 text-gray-400">|</p>
+
+        {/* User section skeleton */}
+        <div className="flex items-center gap-2 text-[#2e3192] text-xl">
+          {/* Avatar Skeleton */}
+          <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+          {/* Text Skeleton */}
+          <div className="w-16 h-4 bg-gray-300 rounded animate-pulse"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
@@ -96,11 +185,12 @@ const Navbar = () => {
       </style>
 
       {/* Top Info Bar (Visible for md and larger) */}
-      <div className="font-serif absolute top-2 w-full hidden md:block text-white py-2 px-4 z-20">
+      <div className="font-mono absolute top-2 w-full hidden md:block text-white py-2 px-4 z-20">
         <div className="max-w-6xl mx-auto flex justify-between text-sm">
           <p className="flex items-center gap-2">
-            <WiSunrise /> Sunrise: 5:15 AM | <LuSunMoon />
-            Sunset: 6:45 PM
+            <WiSunrise />
+            Sunrise: {sunTimes.sunrise || "Loading..."} | <LuSunMoon />
+            Sunset: {sunTimes.sunset || "Loading..."}
           </p>
           <div className="flex items-center gap-4">
             <p className="flex items-center gap-2">
@@ -140,6 +230,37 @@ const Navbar = () => {
           {/* Desktop Nav */}
           <div className="flex ">
             <div className="text-white space-x-4">{navItems}</div>
+            <p className="mx-4">|</p>
+            <div className="flex items-center text-[#2e3192] text-xl">
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  {/* Avatar Skeleton */}
+                  <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                  {/* Text Skeleton */}
+                  <div className="w-16 h-4 bg-gray-300 rounded animate-pulse"></div>
+                </div>
+              ) : user ? (
+                <div className="relative text-2xl hover:text-[#078DD3]">
+                  {isAdmin ? (
+                    <Link to="/admin/courses">
+                      <CiSettings />
+                    </Link>
+                  ) : isTutor ? (
+                    <Link to="/tutor/myCourses">
+                      <RxDashboard />
+                    </Link>
+                  ) : (
+                    <Link to="/student/myCourses">
+                      <RxDashboard />
+                    </Link>
+                  )}
+                </div>
+              ) : (
+                <Link to="/login">
+                  <CiUser />
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </nav>

@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { CgLaptop } from "react-icons/cg";
 import { GiTeacher } from "react-icons/gi";
 import { PiBookOpenTextDuotone } from "react-icons/pi";
+import TitleSec from "../../../Components/TitleSec/TitleSec";
+import Courses from "./Courses";
 
 const IntroSec = () => {
   useEffect(() => {
@@ -52,26 +54,15 @@ const IntroSec = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="px-4 py-8">
       {/* Top Section */}
-      <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">
-        <img
-          src="https://i.ibb.co/twsWp4Fd/logo-nameless.png"
-          alt="Logo"
-          className="w-16"
-        />
-        <p className="text-[#6a6a6a] text-base md:text-lg font-medium font-serif">
-          Welcome To The After School Maktab
-        </p>
-        <h1 className="text-[#6a6a6a] text-3xl md:text-4xl font-bold font-serif leading-snug">
-          Institute <span className="text-black">Focuses on Quality</span>
-          <br className="hidden md:block" />
-          Islamic Education
-        </h1>
-      </div>
+      <TitleSec
+        subTitle=" Welcome To The After School Maktab"
+        title="Institute Focuses on Quality Islamic Education"
+      />
 
       {/* Main Section */}
-      <div className="flex flex-col md:flex-row gap-8 items-center">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 items-center mb-12">
         {/* Left Column */}
         <div className="w-full md:w-1/2">
           <div className="mb-8 md:mb-12 space-y-4">
@@ -141,9 +132,11 @@ const IntroSec = () => {
         </div>
       </div>
 
-      {/* -----------------Bottom Green BG Section-------------------- */}
+      <Courses />
+
+      {/* ---------------BG Section-------------------- */}
       <div
-        className="relative bg-cover bg-center rounded-lg mt-12"
+        className="max-w-6xl mx-auto  relative bg-cover bg-center rounded-lg mt-12"
         style={{
           backgroundImage: `url('https://i.ibb.co/YFkgYgv2/mosque-4196145-1280.jpg')`,
         }}
@@ -165,15 +158,12 @@ const IntroSec = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et.
             </p>
-            <button className=" bg-[#0d3e93] text-white px-6 py-2 rounded-full font-semibold hover:bg-[#082f72] transition">
-              Explore Courses
-            </button>
           </div>
         </div>
       </div>
 
       {/* ----------------Three Point section------------------ */}
-      <div className="flex flex-col md:flex-row gap-4 my-12">
+      <div className="max-w-6xl mx-auto hidden md:flex flex-col md:flex-row gap-4 my-12">
         <div className="flex gap-4 w-1/3">
           <div className="px-4 text-4xl bg-[#0d3e93] text-white  rounded-full flex items-center justify-center">
             <PiBookOpenTextDuotone />
