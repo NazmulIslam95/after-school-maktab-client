@@ -3,10 +3,12 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { AuthContext } from "../Providers/AuthProvider";
 import Swal from "sweetalert2";
+import useCurrentUser from "../CustomHooks/useCurrentUser";
 
 const StudentLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { user, logout } = useContext(AuthContext);
+  const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -24,29 +26,41 @@ const StudentLayout = () => {
 
   const navItems = (
     <>
-      {/* <Link to="/student/home" className="block px-4 py-2 hover:bg-gray-100">
+      {/* <Link to="/student/home" className="block px-4 py-2 hover:bg-gray-100 libertinus-sans-regular">
         Home
       </Link> */}
       <Link
         to="/student/myCourses"
-        className="block px-4 py-2 hover:bg-gray-100"
+        className="block px-4 py-2 hover:bg-gray-100 libertinus-sans-regular"
       >
         My Courses
+      </Link>
+      <Link
+        to="/student/myDemoCls"
+        className="block px-4 py-2 hover:bg-gray-100 libertinus-sans-regular"
+      >
+        My Demo Classes
+      </Link>
+      <Link
+        to="/student/myPayments"
+        className="block px-4 py-2 hover:bg-gray-100 libertinus-sans-regular"
+      >
+        My Payments
       </Link>
       {/* <Link to="/student/results">
         <button className="block px-4 py-2 w-full text-left hover:bg-gray-100 ">
           Results
         </button>
       </Link> */}
-      {/* <Link
-        to="/student/settings"
-        className="block px-4 py-2 hover:bg-gray-100"
+      <Link
+        to="/student/myProfile"
+        className="block px-4 py-2 hover:bg-gray-100 libertinus-sans-regular"
       >
-        Settings
-      </Link> */}
+        My Profile
+      </Link>
       <button
         onClick={handleLogout}
-        className="block px-4 py-2 w-full text-left hover:bg-gray-100 text-red-500"
+        className="block px-4 py-2 w-full text-left hover:bg-gray-100 text-red-500 libertinus-sans-regular"
       >
         Logout
       </button>
@@ -56,11 +70,16 @@ const StudentLayout = () => {
   const studentProfile = (
     <div className="mt-4 border-t border-gray-300 pt-4 text-center">
       <img
-        src="/student-avatar.png"
-        alt="Student"
-        className="w-14 h-14 rounded-full mx-auto mb-2"
+        src={
+          currentUser?.image ||
+          "https://www.alaska.edu/_resources/images/placeholders/profile.png"
+        }
+        alt="Institute Logo"
+        className="w-16 rounded-full mb-2 mx-auto"
       />
-      <h2 className="text-sm font-semibold">{user?.displayName}</h2>
+      <h2 className="text-sm font-semibold libertinus-sans-bold">
+        {user?.displayName}
+      </h2>
     </div>
   );
 

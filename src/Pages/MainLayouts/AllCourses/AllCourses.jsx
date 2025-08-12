@@ -4,13 +4,16 @@ import Footer from "../../../Components/Footer/Footer";
 import Navbar from "../../../Components/Navbar/Navbar";
 import useAllCourses from "../../../CustomHooks/useAllCourses";
 import CourseCard from "../../../Components/CourseCard/CourseCard";
-import { Spiral } from "ldrs/react";
-import "ldrs/react/Spiral.css";
+import { Trefoil } from "ldrs/react";
+import "ldrs/react/Trefoil.css";
+import { useTranslation } from "react-i18next";
 
 const AllCourses = () => {
   const { allCourses, loading } = useAllCourses();
   const [showBg, setShowBg] = useState(window.innerWidth >= 768);
-
+  const { t, i18n } = useTranslation();
+  const fontClass =
+    i18n.language === "BN" ? "hind-siliguri-medium" : "philosopher-regular";
   // Handle background visibility on resize
   useEffect(() => {
     const handleResize = () => {
@@ -24,7 +27,14 @@ const AllCourses = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Spiral size="50" speed="0.9" color="black" />
+        <Trefoil
+          size="100"
+          stroke="2"
+          strokeLength="0.15"
+          bgOpacity="0.1"
+          speed="1.4"
+          color="black"
+        />
       </div>
     );
   }
@@ -36,10 +46,10 @@ const AllCourses = () => {
   return (
     <div>
       <Navbar />
-      <Banner title="Our All Courses" subTitle="Our All Courses" />
+      <Banner title="allCourses.title" subTitle="allCourses.subTitle" />
 
       <div
-        className={`pb-12 ${showBg ? "bg-cover" : "bg-white"}`}
+        className={`pb-12 ${showBg ? "bg-cover" : "bg-white"} ${fontClass}`}
         style={{
           backgroundImage: showBg ? `url('')` : "none",
         }}
@@ -47,7 +57,7 @@ const AllCourses = () => {
         <div className="max-w-6xl mx-auto px-4 py-10 space-y-12">
           {/* 1-to-1 Courses */}
           <div>
-            <h2 className="text-2xl font-semibold mb-6">1-to-1 Courses</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t("courseCategory1")}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {oneToOneCourses.map((course) => (
                 <CourseCard key={course._id} course={course} />
@@ -57,7 +67,7 @@ const AllCourses = () => {
 
           {/* Batch Courses */}
           <div>
-            <h2 className="text-2xl font-semibold mb-6">Batch Courses</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t("courseCategory2")}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {batchCourses.map((course) => (
                 <CourseCard key={course._id} course={course} />

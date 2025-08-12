@@ -15,7 +15,6 @@ const EditCourse = () => {
     name: { en: "", bn: "" },
     description: { en: "", bn: "" },
     image: "",
-    tutor: "",
     type: "batch",
     featured: false,
     categories: "",
@@ -41,7 +40,6 @@ const EditCourse = () => {
           bn: data.description?.bn || "",
         },
         image: data.image || "",
-        tutor: data.tutor || "",
         type: data.type || "batch",
         featured: data.featured || false,
         categories: data.categories?.join(", ") || "",
@@ -189,19 +187,6 @@ const EditCourse = () => {
             name="image"
             className="w-full input input-bordered"
             value={formData.image}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        {/* Tutor */}
-        <div>
-          <label className="block font-medium">Tutor Name</label>
-          <input
-            type="text"
-            name="tutor"
-            className="w-full input input-bordered"
-            value={formData.tutor}
             onChange={handleChange}
             required
           />

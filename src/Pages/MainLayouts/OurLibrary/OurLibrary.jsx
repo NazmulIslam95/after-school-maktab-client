@@ -3,9 +3,9 @@ import Navbar from "../../../Components/Navbar/Navbar";
 
 const OurLibrary = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <Banner title="Our Library" subTitle="Our Library" />
+      <Banner title="ourLibrary.title" subTitle="ourLibrary.subTitle" />
     </div>
   );
 };

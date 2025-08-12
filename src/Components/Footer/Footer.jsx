@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="flex flex-col items-center text-center">
           <Link to="/">
             <img
-              className="w-24 h-24"
+              className="w-12 h-12 md:w-24 md:h-24"
               src="https://i.ibb.co/v47RkJ3K/Logo-3-Edited.png"
               alt="Logo"
             />
@@ -50,7 +50,7 @@ const Footer = () => {
 
         <hr className="my-6 border-gray-200 md:my-6" />
 
-        <div className="max-w-7xl mx-auto flex flex-col items-center sm:flex-row sm:justify-between">
+        <div className="max-w-7xl mx-auto flex flex-col items-center sm:flex-row sm:justify-between mb-16 md:mb-0">
           <p className="text-sm text-gray-500">
             © Copyright 2025. Develop & Maintained by{" "}
             <Link className="font-bold underline hover:text-blue-900" to="https://nazmul-me.netlify.app/">

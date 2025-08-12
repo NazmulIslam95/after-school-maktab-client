@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "./useAxiosSecure";
+import useAxiosPublic from "./useAxiosPublic";
 
 const useAllTutors = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
 
   const fetchTutors = async () => {
-    const response = await axiosSecure.get("/allTutors");
+    const response = await axiosPublic.get("/allTutors");
     return response.data;
   };
 

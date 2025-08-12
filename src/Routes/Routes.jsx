@@ -16,10 +16,22 @@ import AllUsers from "../Pages/AdminDesh/AllUsers/AllUsers";
 import Orders from "../Pages/AdminDesh/Orders/Orders";
 import AddNewCourse from "../Pages/AdminDesh/AddNewCourse/AddNewCourse";
 import MyCourses from "../Pages/StudentDesh/MyCourses/MyCourses";
-import PaymentPage from "../Pages/MainLayouts/PaymentPage/PaymentPage";
+import AdmissionPage from "../Pages/MainLayouts/AdmissionPage/AdmissionPage";
 import EditCourse from "../Pages/AdminDesh/EditCourse/EditCourse";
 import TutorLayout from "../Layouts/TutorLayout";
 import AllTutors from "../Pages/AdminDesh/AllTutors/AllTutors";
+import BookDemo from "../Pages/MainLayouts/BookDemo/BookDemo";
+import AllDemoReq from "../Pages/AdminDesh/AllDemoReq/AllDemoReq";
+import AddATutor from "../Pages/AdminDesh/AddATutor/AddATutor";
+import MyDemoClass from "../Pages/StudentDesh/MyDemoClass/MyDemoClass";
+import AssignedCourses from "../Pages/TutorDesh/AssignedCourses/AssignedCourses";
+import AssignedDemoCls from "../Pages/TutorDesh/AssignedDemoCls/AssignedDemoCls";
+import PaymentHistory from "../Pages/AdminDesh/PaymentHistory/PaymentHistory";
+import MyPayments from "../Pages/StudentDesh/MyPayments/MyPayments";
+import AddNewTestimonial from "../Pages/AdminDesh/AddNewTestimonial/AddNewTestimonial";
+import AllTestimonials from "../Pages/AdminDesh/AllTestimonials/AllTestimonials";
+import MyProfile from "../Pages/StudentDesh/MyProfile/MyProfile";
+import TutorDetails from "../Pages/MainLayouts/TutorDetails/TutorDetails";
 
 export const router = createBrowserRouter([
   {
@@ -62,11 +74,25 @@ export const router = createBrowserRouter([
         path: "/course/:id",
         element: <CourseDetails />,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/courses/${params.id}`),
+          fetch(
+            `https://after-school-maktab-server.vercel.app/courses/${params.id}`
+          ),
       },
       {
-        path: "/paymentPage",
-        element: <PaymentPage />,
+        path: "tutor/:id",
+        element: <TutorDetails />,
+        loader: ({ params }) =>
+          fetch(
+            `https://after-school-maktab-server.vercel.app/tutor/${params.id}`
+          ),
+      },
+      {
+        path: "/admissionPage",
+        element: <AdmissionPage />,
+      },
+      {
+        path: "/bookDemo",
+        element: <BookDemo />,
       },
     ],
   },
@@ -96,11 +122,31 @@ export const router = createBrowserRouter([
       },
       {
         path: "allTutors",
-        element: <AllTutors />, // Placeholder for All Tutors page
+        element: <AllTutors />,
       },
       {
         path: "addNewTutor",
-        element: <div>Add New Tutor</div>, // Placeholder for Add New Tutor page
+        element: <AddATutor />,
+      },
+      {
+        path: "demoReq",
+        element: <AllDemoReq />,
+      },
+      {
+        path: "paymentHistory",
+        element: <PaymentHistory />,
+      },
+      {
+        path: "allTestimonials",
+        element: <AllTestimonials />,
+      },
+      {
+        path: "addNewTestimonial",
+        element: <AddNewTestimonial />,
+      },
+      {
+        path: "myProfile",
+        element: <MyProfile />,
       },
     ],
   },
@@ -112,6 +158,18 @@ export const router = createBrowserRouter([
         path: "myCourses",
         element: <MyCourses />,
       },
+      {
+        path: "myDemoCls",
+        element: <MyDemoClass />,
+      },
+      {
+        path: "myPayments",
+        element: <MyPayments />,
+      },
+      {
+        path: "myProfile",
+        element: <MyProfile />,
+      },
     ],
   },
   {
@@ -120,7 +178,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "assignedCourses",
-        element: <div>Assigned Courses</div>,
+        element: <AssignedCourses />,
+      },
+      {
+        path: "assignedDemoClasses",
+        element: <AssignedDemoCls />,
       },
     ],
   },

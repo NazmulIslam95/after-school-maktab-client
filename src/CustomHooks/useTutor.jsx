@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../Providers/AuthProvider";
-import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const useTutor = () => {
   const { user, loading } = useContext(AuthContext);
@@ -9,22 +9,21 @@ const useTutor = () => {
 
   const {
     data: isTutor = false,
-    isLoading,
+    isLoading: isTutorLoading,
     error,
   } = useQuery({
-    enabled: !!user?.email && !loading, // only run when user.email is available and not loading
+    enabled: !!user?.email && !loading,
     queryKey: ["isTutor", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get("/users/isTutor");
-      return res.data.admin;
+      return res.data?.tutor ?? false;
     },
   });
 
   if (error) {
-    console.error("Error fetching admin status:", error);
+    console.error("Error fetching tutor status:", error);
   }
 
-  return [isTutor, isLoading];
+  return [isTutor, isTutorLoading];
 };
-
 export default useTutor;

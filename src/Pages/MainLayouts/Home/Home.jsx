@@ -2,11 +2,12 @@ import Navbar from "../../../Components/Navbar/Navbar";
 import HomeBanner from "../../../Components/HomeBanner/HomeBanner";
 import IntroSec from "./IntroSec";
 import Footer from "../../../Components/Footer/Footer";
-import Courses from "./Courses";
 import ChooseUs from "./ChooseUs";
 import OurTutors from "./OurTutors";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { useContext } from "react";
+import { Trefoil } from "ldrs/react";
+import Testimonials from "../../../Components/Testimonials/Testimonials";
 
 const Home = () => {
   const { loading } = useContext(AuthContext);
@@ -14,7 +15,14 @@ const Home = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-2xl text-gray-500">Loading...</div>
+        <Trefoil
+          size="100"
+          stroke="2"
+          strokeLength="0.15"
+          bgOpacity="0.1"
+          speed="1.4"
+          color="black"
+        />
       </div>
     );
   }
@@ -25,6 +33,7 @@ const Home = () => {
       <IntroSec />
       <OurTutors />
       <ChooseUs></ChooseUs>
+      <Testimonials />
       <Footer />
     </div>
   );

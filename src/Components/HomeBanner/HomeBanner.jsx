@@ -1,13 +1,20 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { FaArrowDownLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 
 const HomeBanner = () => {
+  const { t, i18n } = useTranslation();
+  const fontClass =
+    i18n.language === "BN" ? "hind-siliguri-medium" : "philosopher-regular";
+
   return (
-    <div className="relative h-screen w-full overflow-hidden font-serif">
+    <div className={`relative h-screen w-full overflow-hidden ${fontClass}`}>
       {/* Background Image */}
       <img
         src="https://plus.unsplash.com/premium_photo-1677013623482-6d71ca2dc71a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Banner"
+        alt={t("homeBanner.backgroundAlt")}
         className="w-full h-full object-cover"
       />
 
@@ -24,25 +31,23 @@ const HomeBanner = () => {
                 preRenderFirstString={true}
                 sequence={[
                   500,
-                  "We Ensure Islamic Values", // initially rendered starting point
+                  t("homeBanner.typeAnimation.first"),
                   1000,
-                  "We Ensure Classified Scholars",
+                  t("homeBanner.typeAnimation.second"),
                 ]}
                 speed={25}
                 style={{ fontSize: "2em" }}
                 repeat={Infinity}
               />
             </h1>
-            <p className="text-sm md:text-xl">
-              After School Maktab is an ISO certified educational institution of
-              international standards Teaching Online Since 2003
-            </p>
-            <button className="px-6 py-2 rounded-full my-4  bg-[#0d3e93] text-white font-semibold transition-colors duration-300 ease-in-out border border-transparent hover:bg-transparent hover:border-white">
-              Explore Courses
-            </button>
+            <p className="text-sm md:text-xl">{t("homeBanner.description")}</p>
+            <Link to="/AllCourses">
+              <button className="px-6 py-2 rounded-full my-4 bg-[#0d3e93] text-white font-semibold transition-colors duration-300 ease-in-out border border-transparent hover:bg-transparent hover:border-white">
+                {t("homeBanner.exploreButton")}
+              </button>
+            </Link>
           </div>
 
-          <div className="hidden md:block absolute bottom-0 right-0 w-48 h-48 md:w-xl md:h-80 bg-[#082f72] rounded-tr-[60px] md:rounded-tl-full md:rounded-bl-full z-0" />
           {/* Right Visual Section */}
           <div className="md:w-1/2 relative flex justify-center mt-12 md:mt-48">
             {/* Yellow Box in Bottom Left */}
@@ -62,7 +67,7 @@ const HomeBanner = () => {
       {/* Scroll Down Indicator */}
       <a
         href="#next-section"
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce text-2xl text-[#ffff] transition z-20"
+        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce text-2xl text-white transition z-20"
       >
         <FaArrowDownLong />
       </a>

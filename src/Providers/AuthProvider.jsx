@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-refresh/only-export-components */
-
 import { useEffect, useState, createContext } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -12,17 +11,17 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import useAxiosPublic from "../CustomHooks/useAxiosPublic";
 import { app } from "../firebase/firebase.config";
+import useAxiosPublic from './../CustomHooks/useAxiosPublic';
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 const axiosPublic = useAxiosPublic();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const provider = new GoogleAuthProvider();
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -55,7 +54,6 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("Current User:", currentUser);
 
       if (currentUser) {
         const userInfo = { email: currentUser.email };
@@ -70,10 +68,10 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     });
-    // Cleanup function to unsubscribe from the auth state listener
-    // This prevents memory leaks and ensures that the listener is removed when the component unmounts
+
     return () => unSubscribe();
   }, []);
+
   const authInfo = {
     user,
     loading,

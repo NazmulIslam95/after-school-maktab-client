@@ -9,7 +9,7 @@ const useAdmin = () => {
 
   const {
     data: isAdmin = false,
-    isLoading,
+    isAdminLoading,
     error,
   } = useQuery({
     enabled: !!user?.email && !loading, // only run when user.email is available and not loading
@@ -24,7 +24,7 @@ const useAdmin = () => {
     console.error("Error fetching admin status:", error);
   }
 
-  return [isAdmin, isLoading];
+  return [isAdmin, isAdminLoading];
 };
 
 export default useAdmin;

@@ -69,16 +69,13 @@ const Courses = () => {
   return (
     <div>
       <DashboardBanner title="All Our Courses" subTitle="Courses" />
-      <div className="overflow-x-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">All Courses</h2>
+      <div className="overflow-x-auto p-4 ">
         <table className="min-w-full bg-white  rounded-lg shadow-md">
           <thead>
-            <tr className="bg-gray-100 text-left text-sm text-gray-600">
-              <th className="p-3">Image</th>
+            <tr className="bg-gray-100 text-left text-sm text-gray-600 mozilla-headline-medium">
+              <th className="pl-4">SN</th>
               <th className="p-3">Name</th>
-              <th className="p-3">Tutor</th>
               <th className="p-3">Type</th>
-              {/* <th className="p-3">Price</th> */}
               <th className="p-3">Featured</th>
               <th className="p-3">Categories</th>
               <th className="p-3 text-center">Actions</th>
@@ -87,34 +84,15 @@ const Courses = () => {
           <tbody>
             {allCourses.map((course, index) => {
               const isHidden = hiddenCourses.includes(index);
-              // const priceText =
-              //   course.type === "1-to-1"
-              //     ? Object.entries(course.price)
-              //         .map(
-              //           ([duration, plans]) =>
-              //             `${duration}: ${Object.entries(plans)
-              //               .map(([days, amount]) => `${days} = $${amount}`)
-              //               .join(", ")}`
-              //         )
-              //         .join(" | ")
-              //     : `$${course.price}`;
 
               return (
                 <tr
                   key={index}
                   className={` ${isHidden ? "opacity-40 bg-gray-50" : ""}`}
                 >
-                  <td className="p-3">
-                    <img
-                      src={course.image}
-                      alt={course.name.bn}
-                      className="w-16 h-16 rounded-md object-cover"
-                    />
-                  </td>
-                  <td className="p-3 font-semibold">{course.name.bn}</td>
-                  <td className="p-3">{course.tutor}</td>
-                  <td className="p-3 capitalize">{course.type}</td>
-                  {/* <td className="p-3 text-sm">{priceText}</td> */}
+                  <td className="pl-4 philosopher-regular">({index + 1})</td>
+                  <td className="p-3 font-semibold hind-siliguri-semibold">{course.name.bn}</td>
+                  <td className="p-3 capitalize philosopher-regular">{course.type}</td>
                   <td className="p-3">
                     <label className="inline-flex items-center cursor-pointer">
                       <input
@@ -130,12 +108,12 @@ const Courses = () => {
                       </div>
                     </label>
                   </td>
-                  <td className="p-3">
+                  <td className="p-3 ">
                     <ul className="flex flex-wrap gap-1 text-xs">
                       {course.categories.map((cat, i) => (
                         <li
                           key={i}
-                          className="bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full"
+                          className="bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full philosopher-regular"
                         >
                           {cat}
                         </li>

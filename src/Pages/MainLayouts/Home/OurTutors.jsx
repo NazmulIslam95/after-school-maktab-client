@@ -1,14 +1,15 @@
 import TitleSec from "../../../Components/TitleSec/TitleSec";
-import teachers from "../../../../public/tutors.json";
 import TutorCard from "./TutorCard";
 import Slider from "react-slick";
+import useAllTutors from "../../../CustomHooks/useAllTutors";
 
 const OurTutors = () => {
+  const { tutors } = useAllTutors();
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
@@ -16,24 +17,18 @@ const OurTutors = () => {
         breakpoint: 1024,
         settings: { slidesToShow: 2 },
       },
-      {
-        breakpoint: 640,
-        settings: { slidesToShow: 1 },
-      },
     ],
   };
   return (
     <div>
-      <TitleSec
-        subTitle="10 Experienced Islamic Teachers"
-        title="Meet Our Teachers"
-      ></TitleSec>
-      <div className="gap-6 px-4 max-w-6xl mx-auto">
+      <TitleSec subTitle="outTutors.subTitle" title="outTutors.title" />
+
+      <div className=" gap-6 px-4 max-w-6xl mx-auto">
         <Slider {...settings}>
           {/* Slider for Tutor Cards */}
-          {teachers.map((teacher) => (
-            <div key={teacher.id} className="px-2">
-              <TutorCard teacher={teacher} />
+          {tutors.map((tutor) => (
+            <div key={tutor.id} className="px-2">
+              <TutorCard tutor={tutor} />
             </div>
           ))}
         </Slider>

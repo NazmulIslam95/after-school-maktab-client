@@ -1,78 +1,140 @@
-import { FaUserShield, FaTrashAlt, FaUserAlt } from "react-icons/fa";
+import { FaChalkboardTeacher, FaTrashAlt } from "react-icons/fa";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
 import useAllUsers from "../../../CustomHooks/useAllUsers";
-import {
-  MdAdminPanelSettings,
-  MdOutlineAdminPanelSettings,
-} from "react-icons/md";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const { users, loading, refetch } = useAllUsers();
-  const handleMakeAdmin = (user) => {
-    console.log("Make admin:", user);
-    // send PATCH or PUT to backend
+  const axiosSecure = useAxiosSecure(); // ✅ use secure axios instance with token
+
+  const handleChangeRole = async (userId, newRole) => {
+    const confirmResult = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to change the role to "${newRole}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, change it!",
+    });
+
+    if (confirmResult.isConfirmed) {
+      try {
+        const res = await axiosSecure.patch(`/users/role/${userId}`, {
+          role: newRole,
+        });
+        if (res.data.success) {
+          Swal.fire(
+            "Updated!",
+            `User role changed to "${newRole}".`,
+            "success"
+          );
+          refetch();
+        } else {
+          Swal.fire(
+            "Failed!",
+            res.data.message || "Role update failed.",
+            "error"
+          );
+        }
+      } catch (err) {
+        Swal.fire("Error!", err.message || "Server error occurred.", "error");
+        console.error("Error updating role:", err);
+      }
+    }
   };
 
-  const handleDeleteUser = (user) => {
-    console.log("Delete user:", user);
-    // send DELETE to backend
-    refetch();
+  const handleDeleteUser = async (user) => {
+    const confirm = await Swal.fire({
+      title: `Delete ${user.name}?`,
+      text: "This action cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e3342f",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Yes, delete",
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        const res = await axiosSecure.delete(`/users/delete/${user._id}`);
+        if (res.data.success) {
+          Swal.fire("Deleted!", "User has been removed.", "success");
+          refetch();
+        } else {
+          Swal.fire(
+            "Failed",
+            res.data.message || "Unable to delete user.",
+            "error"
+          );
+        }
+      } catch (error) {
+        Swal.fire("Error", error.message || "Server error occurred.", "error");
+        console.error("Delete user error:", error);
+      }
+    }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div>
-      <DashboardBanner title="All Users" subTitle="users" />
-      <div className="overflow-x-auto p-4">
-        <h2 className="text-2xl font-bold mb-4">All Users</h2>
-        <table className="min-w-full bg-white rounded-lg shadow-md">
-          <thead className="rounded-lg">
-            <tr className="bg-gray-300 text-left text-sm rounded-lg text-black">
-              <th className="p-3">SN</th>
-              <th className="p-3">Name</th>
-              <th className="p-3">Email</th>
-              <th className="p-3">Phone</th>
-              <th className="p-3">Role</th>
-              <th className="p-3 text-center">Actions</th>
+      <DashboardBanner title="All Users" subTitle="Users" />
+      <div className="overflow-x-auto libertinus-sans-regular">
+        <table className="min-w-5xl mx-auto bg-white rounded-t-xl shadow-md ">
+          <thead className="bg-gradient-to-r from-blue-700 to-blue-500 text-white">
+            <tr className="text-left text-sm font-semibold rounded-t-xl">
+              <th className="pl-4 rounded-tl-xl">SN</th>
+              <th className="p-2">Name</th>
+              <th className="p-2">Email</th>
+              <th className="p-2">Phone</th>
+              <th className="p-2">Role</th>
+              <th className="p-2 text-center rounded-tr-xl">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr key={index} className="border-t">
-                <td className="p-3">{index + 1}</td>
-                <td className="p-3 font-medium flex items-center gap-1">
+              <tr
+                key={user._id}
+                className="border-b border-blue-100 hover:bg-blue-50 transition-all duration-300 ease-in-out transform "
+              >
+                <td className="pl-4 text-gray-600">{index + 1}</td>
+                <td className="p-2 font-medium flex items-center gap-3 text-gray-700">
                   {user.name}
                   {user.role === "admin" && (
-                    <MdOutlineAdminPanelSettings className="text-green-500" />
+                    <MdOutlineAdminPanelSettings className="text-blue-700 text-2xl" />
+                  )}
+                  {user.role === "tutor" && (
+                    // <MdOutlineAdminPanelSettings className="text-blue-700 text-2xl animate-pulse" />
+                    <FaChalkboardTeacher className="text-blue-700 text-2xl " />
                   )}
                 </td>
-                <td className="p-3">{user.email}</td>
-                <td className="p-3">{user.PhoneNo}</td>
-                <td className="p-3 capitalize">
-                  {user.role === "admin" ? (
-                    <button
-                      className=" p-1 rounded text-white bg-green-600"
-                      disabled={user.role === "user"}
-                    >
-                      <MdAdminPanelSettings />
-                    </button>
-                  ) : (
-                    <button
-                      className="p-1 rounded text-white bg-green-500 hover:bg-green-600"
-                      onClick={() => handleMakeAdmin(user)}
-                    >
-                      <FaUserAlt />
-                    </button>
-                  )}
+                <td className="p-2 text-gray-500">{user.email}</td>
+                <td className="p-2 text-gray-500">{user.PhoneNo}</td>
+                <td className="p-2">
+                  <select
+                    value={user.role}
+                    onChange={(e) => handleChangeRole(user._id, e.target.value)}
+                    className="border border-blue-200 px-4 rounded-md bg-white text-gray-600 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 hover:bg-blue-50"
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="tutor">Tutor</option>
+                  </select>
                 </td>
-                <td className="p-3 text-center">
-                  <div className="flex gap-3 justify-center text-lg text-gray-700">
+                <td className="p-2 text-center">
+                  <div className="flex gap-4 justify-center text-lg">
                     <button
                       onClick={() => handleDeleteUser(user)}
                       title="Delete User"
-                      className="hover:text-red-600"
+                      disabled={user.role === "admin" || user.role === "tutor"}
+                      className={`${
+                        user.role === "admin" || user.role === "tutor"
+                          ? "text-gray-400 cursor-not-allowed"
+                          : "text-red-400 hover:text-red-600 transform hover:scale-125 transition-all duration-200"
+                      }`}
                     >
                       <FaTrashAlt />
                     </button>

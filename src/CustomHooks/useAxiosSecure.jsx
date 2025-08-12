@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const axiosSecure = axios.create({
-  // baseURL: "https://pc-geek-bd-server.vercel.app/",
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://after-school-maktab-server.vercel.app/",
+  // baseURL: "http://localhost:5000/",
 });
 
 const useAxiosSecure = () => {
@@ -31,7 +31,9 @@ const useAxiosSecure = () => {
 
         if (
           (status === 401 || status === 403) &&
-          !requestUrl.includes("/users/isAdmin") // ✅ avoid logout from minor routes
+          !requestUrl.includes("/users/isAdmin") && // ✅ avoid logout from minor routes
+          !requestUrl.includes("/users/isTutor") &&
+          !requestUrl.includes("/jwt")
         ) {
           console.warn("Unauthorized request to:", requestUrl);
           await logout();

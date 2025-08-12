@@ -30,8 +30,17 @@ const TutorLayout = () => {
       >
         My Students
       </Link> */}
-      <Link to="/tutor/assignedCourses" className="block px-4 py-2 hover:bg-gray-100">
+      <Link
+        to="/tutor/assignedCourses"
+        className="block px-4 py-2 hover:bg-gray-100"
+      >
         Assigned Courses
+      </Link>
+      <Link
+        to="/tutor/assignedDemoClasses"
+        className="block px-4 py-2 hover:bg-gray-100"
+      >
+        Assigned Demo Classes
       </Link>
       {/* <Link to="/tutor/schedule" className="block px-4 py-2 hover:bg-gray-100">
         Schedule

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  // baseURL: "https://pc-geek-bd-server.vercel.app/",
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://after-school-maktab-server.vercel.app/",
+  // baseURL: "http://localhost:5000/",
 });
 const useAxiosPublic = () => {
   return axiosPublic;

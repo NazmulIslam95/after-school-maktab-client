@@ -21,7 +21,9 @@ const ChooseUs = () => {
           <div className="flex flex-col items-start">
             <div className="flex gap-3 mb-1">
               {/* <i className="fas fa-tree text-2xl text-[#1a1a1a]"></i> */}
-              <span className="text-xl md:text-5xl font-semibold text-[#1a1a1a]">150</span>
+              <span className="text-xl md:text-5xl font-semibold text-[#1a1a1a]">
+                150
+              </span>
             </div>
             <div className="h-[3px] bg-[#f7b800] w-full mb-2"></div>
             <p className="text-[#6c6c6c] text-sm leading-relaxed w-[120px] md:w-[230px]">
@@ -47,13 +49,13 @@ const ChooseUs = () => {
       </div>
 
       {/* Right Column (Cards) */}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-6 mt-0 md:mt-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mt-0 md:mt-16">
         {/* Card 1 */}
         <div className="bg-[url('https://naudummy.com/darsgah/wp-content/plugins/ingeniofy/assets/images/background-online.jpg')] bg-cover rounded-md shadow-xl p-8 flex flex-col justify-center  text-left">
-          <h3 className="font-semibold text-lg text-[#1a1a1a] mb-1">
+          <h3 className="font-semibold text-md md:text-lg text-[#1a1a1a] mb-1">
             Online Academics Programs
           </h3>
-          <p className="text-sm text-[#4d4d4d]">
+          <p className="text-xs text-[#4d4d4d]">
             We think before we deliver. We bespoke as standard. Lorem ipsum
             dolor sit...
           </p>
@@ -61,30 +63,30 @@ const ChooseUs = () => {
 
         {/* Repeat for Card 2, 3, 4 */}
         <div className="bg-[url('https://naudummy.com/darsgah/wp-content/plugins/ingeniofy/assets/images/background-online.jpg')] bg-cover rounded-md shadow-xl p-8 flex flex-col justify-center  text-left">
-          <h3 className="font-semibold text-lg text-[#1a1a1a] mb-1">
+          <h3 className="font-semibold text-md text-[#1a1a1a] mb-1">
             Learn Islamic Books
           </h3>
-          <p className="text-sm text-[#4d4d4d]">
+          <p className="text-xs text-[#4d4d4d]">
             We think before we deliver. We bespoke as standard. Lorem ipsum
             dolor sit...
           </p>
         </div>
 
         <div className="bg-[url('https://naudummy.com/darsgah/wp-content/plugins/ingeniofy/assets/images/background-online.jpg')] bg-cover rounded-md shadow-xl p-8 flex flex-col justify-center  text-left">
-          <h3 className="font-semibold text-lg text-[#1a1a1a] mb-1">
+          <h3 className="font-semibold text-md text-[#1a1a1a] mb-1">
             Online Quran Classes
           </h3>
-          <p className="text-sm text-[#4d4d4d]">
+          <p className="text-xs text-[#4d4d4d]">
             We think before we deliver. We bespoke as standard. Lorem ipsum
             dolor sit...
           </p>
         </div>
 
         <div className="bg-[url('https://naudummy.com/darsgah/wp-content/plugins/ingeniofy/assets/images/background-online.jpg')] bg-cover rounded-md shadow-xl p-8 flex flex-col justify-center  text-left">
-          <h3 className="font-semibold text-lg text-[#1a1a1a] mb-1">
+          <h3 className="font-semibold text-md text-[#1a1a1a] mb-1">
             We Value Our Students
           </h3>
-          <p className="text-sm text-[#4d4d4d]">
+          <p className="text-xs text-[#4d4d4d]">
             We think before we deliver. We bespoke as standard. Lorem ipsum
             dolor sit...
           </p>

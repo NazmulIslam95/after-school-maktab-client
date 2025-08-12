@@ -5,6 +5,8 @@ import { router } from "./Routes/Routes";
 import AuthProvider from "./Providers/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
+import "./i18n";
+import "../src/index.css";
 
 const queryClient = new QueryClient();
 

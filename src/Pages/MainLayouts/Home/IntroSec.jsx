@@ -3,7 +3,7 @@ import { CgLaptop } from "react-icons/cg";
 import { GiTeacher } from "react-icons/gi";
 import { PiBookOpenTextDuotone } from "react-icons/pi";
 import TitleSec from "../../../Components/TitleSec/TitleSec";
-import Courses from "./Courses";
+import FeaturedCourses from "./FeaturedCourses";
 
 const IntroSec = () => {
   useEffect(() => {
@@ -56,10 +56,7 @@ const IntroSec = () => {
   return (
     <div className="px-4 py-8">
       {/* Top Section */}
-      <TitleSec
-        subTitle=" Welcome To The After School Maktab"
-        title="Institute Focuses on Quality Islamic Education"
-      />
+      <TitleSec subTitle="afterSchool.subTitle" title="afterSchool.title" />
 
       {/* Main Section */}
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 items-center mb-12">
@@ -132,8 +129,7 @@ const IntroSec = () => {
         </div>
       </div>
 
-      <Courses />
-
+      <FeaturedCourses />
       {/* ---------------BG Section-------------------- */}
       <div
         className="max-w-6xl mx-auto  relative bg-cover bg-center rounded-lg mt-12"
@@ -150,59 +146,13 @@ const IntroSec = () => {
               className="w-96 rounded-full shadow-lg shadow-[#000000] mb-4 md:mb-0"
             />
           </div>
-          <div className="text-center md:text-left space-y-8 w-2/3">
-            <h2 className="text-5xl font-serif text-white">
+          <div className="text-center md:text-left space-y-8 w-full md:w-2/3">
+            <h2 className="text-2xl md:text-5xl font-serif text-white">
               Alhamdulillah! Our numbers <br /> have surpassed 1 million.
             </h2>
-            <p className="text-sm md:text-base text-white">
+            <p className="text-xs md:text-base text-white">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ----------------Three Point section------------------ */}
-      <div className="max-w-6xl mx-auto hidden md:flex flex-col md:flex-row gap-4 my-12">
-        <div className="flex gap-4 w-1/3">
-          <div className="px-4 text-4xl bg-[#0d3e93] text-white  rounded-full flex items-center justify-center">
-            <PiBookOpenTextDuotone />
-          </div>
-          <div className="flex gap-4 flex-col items-center justify-center text-left">
-            <h1 className="text-2xl font-serif font-semibold">
-              Learn quick Quran Classes
-            </h1>
-            <p>
-              Lorem ipsum dolor sit amet, co nsectetur adipiscing elit, sed do
-              eiusmod tempo.
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-4 w-1/3">
-          <div className="px-4 text-4xl bg-[#0d3e93] text-white  rounded-full flex items-center justify-center">
-            <PiBookOpenTextDuotone />
-          </div>
-          <div className="flex gap-4 flex-col items-center justify-center text-left">
-            <h1 className="text-2xl font-serif font-semibold">
-              ISO certified islamic institution
-            </h1>
-            <p>
-              Lorem ipsum dolor sit amet, co nsectetur adipiscing elit, sed do
-              eiusmod tempo.
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-4 w-1/3">
-          <div className="px-4 text-4xl bg-[#0d3e93] text-white  rounded-full flex items-center justify-center">
-            <PiBookOpenTextDuotone />
-          </div>
-          <div className="flex gap-4 flex-col items-center justify-center text-left">
-            <h1 className="text-2xl font-serif font-semibold">
-              Online Arabic Classes For Kids
-            </h1>
-            <p>
-              Lorem ipsum dolor sit amet, co nsectetur adipiscing elit, sed do
-              eiusmod tempo.
             </p>
           </div>
         </div>
