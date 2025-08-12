@@ -92,7 +92,7 @@ const Testimonials = () => {
             {testimonials.map((testimonial) => (
               <SwiperSlide key={testimonial._id}>
                 <div className=" w-full md:w-1/2 mx-auto p-2 sm:p-4">
-                  <div className="flex flex-col items-center  space-y-4">
+                  <div className="flex flex-col items-center space-y-4">
                     {testimonial.gender && (
                       <div className="text-xs text-gray-500 mt-1">
                         {testimonial.gender.toLowerCase() === "female" ? (
