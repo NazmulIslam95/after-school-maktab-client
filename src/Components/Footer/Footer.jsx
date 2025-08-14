@@ -51,13 +51,7 @@ const Footer = () => {
         <hr className="my-6 border-gray-200 md:my-6" />
 
         <div className="max-w-7xl mx-auto flex flex-col items-center sm:flex-row sm:justify-between mb-16 md:mb-0">
-          <p className="text-sm text-gray-500">
-            © Copyright 2025. Develop & Maintained by{" "}
-            <Link className="font-bold underline hover:text-blue-900" to="https://nazmul-me.netlify.app/">
-              Nazmul Islam
-            </Link>
-            .
-          </p>
+          <p className="text-sm text-gray-500">© Copyright 2025.</p>
 
           <div className="flex -mx-2">
             <Link

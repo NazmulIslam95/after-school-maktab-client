@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
 
 const axiosSecure = axios.create({
-  baseURL: "https://after-school-maktab-server.vercel.app/",
-  // baseURL: "http://localhost:5000/",
+  // baseURL: "https://after-school-maktab-server.vercel.app/",
+  baseURL: "http://localhost:5000/",
 });
 
 const useAxiosSecure = () => {
