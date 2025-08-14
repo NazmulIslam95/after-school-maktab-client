@@ -71,9 +71,9 @@ const CourseDetails = () => {
               <p className="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 text-center sm:text-left hind-siliguri-bold">
                 {course?.description?.bn}
               </p>
-              <p className="text-sm text-gray-600 mb-3 sm:mb-4 flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-blue-900 font-semibold">📋 Session:</span>{" "}
-                {course?.type}
+              <p className="text-sm uppercase text-gray-600 mb-3 sm:mb-4 font-bold flex items-center justify-center sm:justify-start gap-2">
+                <span className="text-blue-900 capitalize font-bold">📋 Session:</span>{" "}
+                {course?.type === "1-to-1" ? "One To One" : course?.type}
               </p>
 
               {/* Categories */}

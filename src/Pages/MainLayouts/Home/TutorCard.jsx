@@ -19,8 +19,12 @@ const TeacherCard = ({ tutor }) => {
         {/* Experience Badge */}
         <div className="absolute top-2 right-2 bg-gradient-to-br from-blue-500 to-blue-900 text-white flex items-center justify-center h-20 w-20 rounded-full shadow-lg z-10 p-2">
           <p className="text-center text-xs leading-tight">
-            <span className="text-md font-bold block">{tutor?.experience}</span>
-            {tutor?.experience === "1" ? "Year" : "Years"} Experience
+            <span className="text-3xl font-bold block">
+              {tutor?.experience}
+            </span>
+            <span className="text-[8px]">
+              {tutor?.experience === "1" ? "Year" : "Years"} Experience
+            </span>
           </p>
         </div>
 

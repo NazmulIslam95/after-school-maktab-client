@@ -254,7 +254,7 @@ const Navbar = () => {
                       <FaChalkboardTeacher />
                     </Link>
                   ) : (
-                    <Link to="/student/myCourses">
+                    <Link to="/student/myProfile">
                       <RxDashboard />
                     </Link>
                   )}
@@ -384,7 +384,7 @@ const Navbar = () => {
                 ? "/admin/courses"
                 : isTutor
                   ? "/tutor/assignedCourses"
-                  : "/student/myCourses"
+                  : "/student/myProfile"
             }
             className={({ isActive }) =>
               `flex flex-col items-center p-2 text-xs ${

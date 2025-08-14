@@ -61,7 +61,9 @@ const TutorLayout = () => {
         alt="Tutor"
         className="w-14 h-14 rounded-full mx-auto mb-2"
       />
-      <h2 className="text-sm font-semibold">{user?.displayName}</h2>
+      <Link to="/tutor/myProfile">
+        <h2 className="text-sm font-semibold">{user?.displayName}</h2>
+      </Link>
     </div>
   );
 

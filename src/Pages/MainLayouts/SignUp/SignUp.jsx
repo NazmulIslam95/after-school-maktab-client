@@ -13,11 +13,12 @@ const SignUp = () => {
   const location = useLocation();
   const axiosPublic = useAxiosPublic();
   const [isLoading, setIsLoading] = useState(false);
+  const [referralCode, setReferralCode] = useState("");
   const from = location.state?.from || "/";
 
   const handleSignup = (event) => {
     event.preventDefault();
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
 
     const form = event.target;
     const name = form.name.value;
@@ -36,33 +37,45 @@ const SignUp = () => {
               email,
               PhoneNo: phoneNo,
               password: password,
-              role: "user",
+              referredBy: referralCode || null,
             };
 
-            axiosPublic.post("/users", userInfo).then((res) => {
-              if (res.data.insertedId) {
-                Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: "User Successfully Logged In",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-                navigate(from, { replace: true });
-              }
-              setIsLoading(false); // Stop loading
-            });
+            axiosPublic
+              .post("/users", userInfo)
+              .then((res) => {
+                if (res.data.insertedId) {
+                  Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Signup Successful!",
+                    showConfirmButton: true,
+                  });
+                  navigate(from, { replace: true });
+                }
+                setIsLoading(false);
+              })
+              .catch((error) => {
+                console.error("Signup Error:", error);
+                Swal.fire(
+                  "Error!",
+                  error.response?.data?.message || "Signup failed",
+                  "error"
+                );
+                setIsLoading(false);
+              });
           })
           .catch((error) => {
-            console.log(error);
+            console.error("Profile Update Error:", error);
             setIsLoading(false);
           });
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Auth Error:", error);
+        Swal.fire("Error!", error.message, "error");
         setIsLoading(false);
       });
   };
+
   return (
     <div>
       <Navbar />
@@ -124,6 +137,23 @@ const SignUp = () => {
                   placeholder="Enter your phone number"
                   name="phone"
                   type="tel"
+                />
+              </div>
+              <div className="space-y-2 text-sm">
+                <label
+                  className="text-sm font-medium leading-none text-zinc-700"
+                  htmlFor="referralCode"
+                >
+                  Referral Code (Optional)
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border px-3 py-2 focus-visible:outline-none"
+                  id="referralCode"
+                  placeholder="Enter Referral Code (If Any)"
+                  name="referralCode"
+                  type="text"
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(e.target.value)}
                 />
               </div>
               <div className="space-y-2 text-sm">

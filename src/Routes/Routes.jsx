@@ -184,6 +184,10 @@ export const router = createBrowserRouter([
         path: "assignedDemoClasses",
         element: <AssignedDemoCls />,
       },
+      {
+        path: "myProfile",
+        element: <MyProfile />,
+      },
     ],
   },
 ]);
