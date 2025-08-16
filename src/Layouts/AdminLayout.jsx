@@ -41,6 +41,9 @@ const AdminLayout = () => {
       <Link to="/admin/allTutors" className="block px-4 p-1 hover:bg-gray-100">
         Tutors
       </Link>
+      <Link to="/admin/allPdf" className="block px-4 p-1 hover:bg-gray-100">
+        Our PDFs
+      </Link>
       <Link
         to="/admin/allTestimonials"
         className="block px-4 p-1 hover:bg-gray-100"

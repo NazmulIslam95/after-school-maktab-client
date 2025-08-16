@@ -32,6 +32,7 @@ import AddNewTestimonial from "../Pages/AdminDesh/AddNewTestimonial/AddNewTestim
 import AllTestimonials from "../Pages/AdminDesh/AllTestimonials/AllTestimonials";
 import MyProfile from "../Pages/StudentDesh/MyProfile/MyProfile";
 import TutorDetails from "../Pages/MainLayouts/TutorDetails/TutorDetails";
+import AllPdf from "../Pages/AdminDesh/AllPdf/AllPdf";
 
 export const router = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ export const router = createBrowserRouter([
       {
         path: "editCourse/:id",
         element: <EditCourse />,
+      },
+      {
+        path: "allPdf",
+        element: <AllPdf />,
       },
       {
         path: "allTutors",
