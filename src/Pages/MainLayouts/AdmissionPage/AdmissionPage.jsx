@@ -30,10 +30,14 @@ const AdmissionPage = () => {
     referralCode: "",
   });
 
-  const [discountedPrice, setDiscountedPrice] = useState(state.price);
+  const [setDiscountedPrice] = useState(state.price);
   const [isValidatingCode, setIsValidatingCode] = useState(false);
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [originalPrice] = useState(state.price);
+
+  // Sibling feature state
+  const [hasSiblings, setHasSiblings] = useState(false);
+  const [siblings, setSiblings] = useState([{ name: "", email: "" }]);
 
   // Redirect to login if no user
   useEffect(() => {
@@ -74,6 +78,34 @@ const AdmissionPage = () => {
     }));
   };
 
+  // Sibling functions
+  const addSibling = () => {
+    setSiblings([...siblings, { name: "", email: "" }]);
+  };
+
+  const removeSibling = (index) => {
+    const updated = [...siblings];
+    updated.splice(index, 1);
+    setSiblings(updated);
+  };
+
+  const handleSiblingChange = (index, e) => {
+    const { name, value } = e.target;
+    const updated = [...siblings];
+    updated[index][name] = value;
+    setSiblings(updated);
+  };
+
+  // Calculate sibling discount
+  const siblingDiscount = hasSiblings
+    ? originalPrice * 0.2 * siblings.filter((s) => s.name && s.email).length
+    : 0;
+
+  // Calculate final price (combines referral and sibling discounts)
+  const finalPrice = isCodeValid
+    ? originalPrice * 0.85 - siblingDiscount
+    : originalPrice - siblingDiscount;
+
   const validateReferralCode = async () => {
     if (!formData.referralCode) {
       Swal.fire({
@@ -85,7 +117,6 @@ const AdmissionPage = () => {
       return;
     }
 
-    // Check if user is trying to use their own code (frontend check)
     if (currentUser?.referralCode === formData.referralCode) {
       Swal.fire({
         icon: "error",
@@ -142,13 +173,18 @@ const AdmissionPage = () => {
       courseId: state.courseId,
       courseName: state.courseName,
       type: state.type,
-      price: isCodeValid ? discountedPrice : originalPrice,
+      price: finalPrice,
       originalPrice: originalPrice,
       duration: state.duration,
       days: state.days,
       confirmed: false,
       referralCode: isCodeValid ? formData.referralCode : null,
-      discountApplied: isCodeValid,
+      discountApplied: isCodeValid || hasSiblings,
+      discountType: isCodeValid ? "referral" : hasSiblings ? "sibling" : null,
+      discountAmount: isCodeValid
+        ? originalPrice * 0.15 + siblingDiscount
+        : siblingDiscount,
+      siblings: hasSiblings ? siblings.filter((s) => s.name && s.email) : [],
       ...formData,
     };
 
@@ -188,7 +224,9 @@ const AdmissionPage = () => {
       Swal.fire({
         icon: "success",
         title: "Request Submitted!",
-        text: "Your Admission Request Has Been Successfully Submitted.",
+        text: hasSiblings
+          ? `You and ${siblings.filter((s) => s.name && s.email).length} sibling(s) enrolled successfully!`
+          : "Your Admission Request Has Been Successfully Submitted.",
         confirmButtonColor: "#082f72",
       }).then(() => {
         navigate("/");
@@ -251,10 +289,16 @@ const AdmissionPage = () => {
               <div className="bg-white p-3 rounded-lg shadow-sm">
                 <p className="text-sm text-gray-500">Price</p>
                 <p className="font-semibold text-gray-800">
-                  ${isCodeValid ? discountedPrice.toFixed(2) : originalPrice}
-                  {isCodeValid && (
+                  ${finalPrice.toFixed(2)}
+                  {(isCodeValid || siblingDiscount > 0) && (
                     <span className="ml-2 text-sm text-green-600 line-through">
                       ${originalPrice}
+                    </span>
+                  )}
+                  {siblingDiscount > 0 && (
+                    <span className="block text-xs text-blue-600 mt-1">
+                      {siblings.filter((s) => s.name && s.email).length}{" "}
+                      sibling(s) × 20% discount
                     </span>
                   )}
                 </p>
@@ -393,6 +437,86 @@ const AdmissionPage = () => {
                   />
                 </div>
 
+                {/* Sibling Enrollment Section */}
+                <div className="space-y-1">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={hasSiblings}
+                      onChange={() => setHasSiblings(!hasSiblings)}
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                    />
+                    Enroll with siblings (Get 20% discount Everyone)
+                  </label>
+
+                  {hasSiblings && (
+                    <div className="mt-2 space-y-3">
+                      {siblings.map((sibling, index) => (
+                        <div
+                          key={index}
+                          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+                        >
+                          <div>
+                            <label className="block text-xs text-gray-500">
+                              Sibling {index + 1} Name
+                            </label>
+                            <input
+                              type="text"
+                              name="name"
+                              value={sibling.name}
+                              onChange={(e) => handleSiblingChange(index, e)}
+                              className="w-full px-3 py-2 border rounded"
+                              required={hasSiblings}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs text-gray-500">
+                              Sibling {index + 1} Email
+                            </label>
+                            <input
+                              type="email"
+                              name="email"
+                              value={sibling.email}
+                              onChange={(e) => handleSiblingChange(index, e)}
+                              className="w-full px-3 py-2 border rounded"
+                              required={hasSiblings}
+                            />
+                          </div>
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => removeSibling(index)}
+                              className="text-red-500 text-xs md:col-span-2"
+                            >
+                              Remove sibling
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={addSibling}
+                        className="text-blue-500 text-sm flex items-center gap-1 mt-2"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                          />
+                        </svg>
+                        Add another sibling
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {/* Referral Code */}
                 <div className="space-y-1">
                   <label className="block text-sm font-medium text-gray-700">
@@ -460,7 +584,37 @@ const AdmissionPage = () => {
                 ></textarea>
               </div>
 
-              {/* Terms and Conditions */}
+              {/* Terms and Conditions Section */}
+              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                <h4 className="text-lg font-bold text-gray-800 mb-3">
+                  Terms and Conditions
+                </h4>
+
+                <div className="prose prose-sm text-gray-700">
+                  <h5 className="font-semibold text-gray-800">
+                    ক্লাস সংক্রান্ত নির্দেশিকা
+                  </h5>
+                  <ol className="list-decimal pl-5 space-y-2">
+                    <li>
+                      শিক্ষার্থীদের অবশ্যই যথাসময়ে ক্লাসে উপস্থিত হতে হবে।
+                    </li>
+                    <li>
+                      ক্লাস শুরু হওয়ার ১০ মিনিট পর আর প্রবেশ করা যাবে না এবং
+                      সেই ক্লাস আর দেওয়া হবে না।
+                    </li>
+                    <li>
+                      কোনো কারণে ক্লাস করতে না পারলে অন্তত ১ ঘণ্টা আগে জানাতে
+                      হবে। জানালে পরবর্তীতে সেই ক্লাস পুনরায় নেওয়া হবে।
+                    </li>
+                    <li>
+                      শিক্ষক উপস্থিত না হলে অথবা প্রাতিষ্ঠানিক কোন কারণে ক্লাস
+                      অনুষ্ঠিত না হলে, সেটি পরবর্তীতে সেই ক্লাস নেওয়া হবে।
+                    </li>
+                  </ol>
+                </div>
+              </div>
+
+              {/* Terms Agreement Checkbox */}
               <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
@@ -473,11 +627,11 @@ const AdmissionPage = () => {
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="terms" className="font-medium text-gray-700">
-                    I agree to the terms and conditions
+                    I have read and agree to the terms and conditions
                   </label>
                   <p className="text-gray-500">
-                    By submitting this form, you agree to our enrollment
-                    policies.
+                    By submitting this form, you agree to abide by all the
+                    policies mentioned above.
                   </p>
                 </div>
               </div>

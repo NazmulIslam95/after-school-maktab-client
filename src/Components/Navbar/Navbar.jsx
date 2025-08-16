@@ -192,15 +192,19 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <p className="flex items-center gap-2">
               <HiOutlineDevicePhoneMobile />
-              {t("hotline")}: 017XX-XXXXXX
+              {t("hotline")}: +88 01787 110 752
             </p>
             <div className="flex gap-2 items-center">
-              <Link to="https://facebook.com" target="_blank" rel="noreferrer">
+              <Link
+                to="https://www.facebook.com/share/14Dr7vs8wfP/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <FaFacebookF />
               </Link>
-              <Link to="https://youtube.com" target="_blank" rel="noreferrer">
+              {/* <Link to="https://youtube.com" target="_blank" rel="noreferrer">
                 <FaYoutube />
-              </Link>
+              </Link> */}
               {/* Language toggle */}
               <label className="cursor-pointer flex items-center gap-2">
                 <span className="text-white text-xs font-semibold">

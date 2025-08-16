@@ -147,25 +147,25 @@ const AllPdf = () => {
   };
 
   // Toggle PDF visibility
-  const toggleVisibility = async (id) => {
-    const pdf = pdfList.find((p) => p._id === id);
-    const newVisibility = !pdf.isHidden;
+//   const toggleVisibility = async (id) => {
+//     const pdf = pdfList.find((p) => p._id === id);
+//     const newVisibility = !pdf.isHidden;
 
-    try {
-      await axiosSecure.patch(`/pdf/${id}/visibility`, {
-        isHidden: newVisibility,
-      });
+//     try {
+//       await axiosSecure.patch(`/pdf/${id}/visibility`, {
+//         isHidden: newVisibility,
+//       });
 
-      setPdfList(
-        pdfList.map((p) =>
-          p._id === id ? { ...p, isHidden: newVisibility } : p
-        )
-      );
-      // eslint-disable-next-line no-unused-vars
-    } catch (err) {
-      Swal.fire("Error!", "Failed to update visibility.", "error");
-    }
-  };
+//       setPdfList(
+//         pdfList.map((p) =>
+//           p._id === id ? { ...p, isHidden: newVisibility } : p
+//         )
+//       );
+//       // eslint-disable-next-line no-unused-vars
+//     } catch (err) {
+//       Swal.fire("Error!", "Failed to update visibility.", "error");
+//     }
+//   };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -328,7 +328,7 @@ const AllPdf = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button
+                      {/* <button
                         onClick={() => toggleVisibility(pdf._id)}
                         className="text-gray-500 hover:text-blue-600 mr-4"
                         title={pdf.isHidden ? "Show PDF" : "Hide PDF"}
@@ -338,7 +338,7 @@ const AllPdf = () => {
                         ) : (
                           <FiEyeOff size={18} />
                         )}
-                      </button>
+                      </button> */}
                       <button
                         onClick={() => handleDelete(pdf._id)}
                         className="text-gray-500 hover:text-red-600"
