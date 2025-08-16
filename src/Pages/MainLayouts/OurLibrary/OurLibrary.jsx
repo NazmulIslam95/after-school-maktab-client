@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import Banner from "../../../Components/Banner/Banner";
 import Navbar from "../../../Components/Navbar/Navbar";

@@ -94,12 +94,12 @@ const Navbar = () => {
       <NavLink to="/about" className={navLinkClasses}>
         {t("about")}
       </NavLink>
-      <NavLink to="/teachers" className={navLinkClasses}>
+      {/* <NavLink to="/teachers" className={navLinkClasses}>
         {t("teachers")}
       </NavLink>
       <NavLink to="/contact" className={navLinkClasses}>
         {t("contact")}
-      </NavLink>
+      </NavLink> */}
     </>
   );
 
@@ -133,7 +133,7 @@ const Navbar = () => {
       >
         {t("about")}
       </NavLink>
-      <NavLink
+      {/* <NavLink
         to="/teachers"
         className={mobileNavLinkClasses}
         onClick={() => setIsDrawerOpen(false)}
@@ -146,7 +146,7 @@ const Navbar = () => {
         onClick={() => setIsDrawerOpen(false)}
       >
         {t("contact")}
-      </NavLink>
+      </NavLink> */}
     </>
   );
 
