@@ -4,6 +4,11 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     EN: {
         translation: {
+            bismillah: "In the name of Allah",
+            since_operating: "Since 2024 Operating In The World",
+            institute_description: "After School Maktab Online Institute is not just a name but a platform where students of knowledge will grow under the shade of Ilm and Amal.",
+            online_courses: "Online Islamic Courses",
+            online_tutors: "Online Quran Tutors",
             home: "Home",
             courses: "Courses",
             library: "Our Library",
@@ -125,6 +130,11 @@ const resources = {
 
     BN: {
         translation: {
+            bismillah: "বিসমিল্লাহির রাহমানির রাহীম",
+            since_operating: "২০২৪ সাল থেকে বিশ্বব্যাপী পরিচালিত হচ্ছে",
+            institute_description: "After School Maktab Online Institute শুধু একটি নাম নয়, বরং একটি প্ল্যাটফর্ম যেখানে ঝাঁকে ঝাঁকে ত্বালিবে ইলম গড়ে উঠবে ইলম ও আ'মালের ছায়ায়।",
+            online_courses: "অনলাইন ইসলামিক কোর্স",
+            online_tutors: "অনলাইন কুরআন শিক্ষক",
             home: "হোম",
             courses: "কোর্সসমূহ",
             library: "আমাদের লাইব্রেরি",

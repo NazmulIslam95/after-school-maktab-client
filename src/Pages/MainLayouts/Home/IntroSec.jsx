@@ -4,8 +4,11 @@ import { GiTeacher } from "react-icons/gi";
 import { PiBookOpenTextDuotone } from "react-icons/pi";
 import TitleSec from "../../../Components/TitleSec/TitleSec";
 import FeaturedCourses from "./FeaturedCourses";
+import { useTranslation } from "react-i18next";
 
 const IntroSec = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
@@ -54,7 +57,7 @@ const IntroSec = () => {
   }, []);
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 py-8 hind-siliguri-medium">
       {/* Top Section */}
       <TitleSec subTitle="afterSchool.subTitle" title="afterSchool.title" />
 
@@ -65,20 +68,22 @@ const IntroSec = () => {
           <div className="mb-8 md:mb-12 space-y-4">
             <img
               src="https://naudummy.com/darsgah/wp-content/plugins/ingeniofy/assets/images/bismillah.png"
-              alt="Bismillah"
+              alt={t("bismillah")}
               className="w-32 md:w-40"
             />
-            <h3 className="text-[#058349] font-serif font-bold text-lg md:text-xl">
-              Since 2024 Operating In The World
+
+            {/* Bilingual Heading */}
+            <h3 className="text-[#058349] font-bold text-lg md:text-xl">
+              {t("since_operating")}
             </h3>
-            <p className="text-[#6a6a6a] text-sm md:text-base font-serif max-w-md">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation.
+
+            {/* Bilingual Description */}
+            <p className="text-[#6a6a6a] text-sm md:text-base max-w-md">
+              {t("institute_description")}
             </p>
           </div>
 
-          {/* Features */}
+          {/* Features - Bilingual */}
           <div className="flex flex-col md:flex-row gap-6">
             {/* Feature 1 */}
             <div className="flex-1">
@@ -86,14 +91,8 @@ const IntroSec = () => {
                 <div className="bg-[#ffb606] hover:bg-[#058349] p-4 md:p-5 rounded-full transition-colors">
                   <CgLaptop className="text-white text-xl" />
                 </div>
-                <h4 className="text-xl font-semibold font-serif">
-                  Online Islamic Courses
-                </h4>
+                <h4 className="text-xl font-semibold">{t("online_courses")}</h4>
               </div>
-              <hr className="my-3 border-[#ffb606]" />
-              <p className="text-sm text-gray-600">
-                Learn Quran and Islamic studies at your own pace online.
-              </p>
             </div>
 
             {/* Feature 2 */}
@@ -102,14 +101,8 @@ const IntroSec = () => {
                 <div className="bg-[#ffb606] hover:bg-[#058349] p-4 md:p-5 rounded-full transition-colors">
                   <GiTeacher className="text-white text-xl" />
                 </div>
-                <h4 className="text-xl font-semibold font-serif">
-                  Online Quran Tutors
-                </h4>
+                <h4 className="text-xl font-semibold">{t("online_tutors")}</h4>
               </div>
-              <hr className="my-3 border-[#ffb606]" />
-              <p className="text-sm text-gray-600">
-                Qualified tutors available for personalized Quran learning.
-              </p>
             </div>
           </div>
         </div>
@@ -147,13 +140,14 @@ const IntroSec = () => {
             />
           </div>
           <div className="text-center md:text-left space-y-8 w-full md:w-2/3">
-            <h2 className="text-2xl md:text-5xl font-serif text-white">
-              Alhamdulillah! Our numbers <br /> have surpassed 1 million.
+            <h2 className="text-2xl md:text-4xl font-bold text-white">
+              {/* Alhamdulillah! Our numbers <br /> have surpassed 2 Thousand. */}
+              {t("homeBanner.description")}
             </h2>
-            <p className="text-xs md:text-base text-white">
+            {/* <p className="text-xs md:text-base text-white">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et.
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
