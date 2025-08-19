@@ -33,6 +33,7 @@ import AllTestimonials from "../Pages/AdminDesh/AllTestimonials/AllTestimonials"
 import MyProfile from "../Pages/StudentDesh/MyProfile/MyProfile";
 import TutorDetails from "../Pages/MainLayouts/TutorDetails/TutorDetails";
 import AllPdf from "../Pages/AdminDesh/AllPdf/AllPdf";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -89,11 +90,20 @@ export const router = createBrowserRouter([
       },
       {
         path: "/admissionPage",
-        element: <AdmissionPage />,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <AdmissionPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/bookDemo",
-        element: <BookDemo />,
+        element: (
+          <PrivateRoute>
+            <BookDemo />
+          </PrivateRoute>
+        ),
       },
     ],
   },

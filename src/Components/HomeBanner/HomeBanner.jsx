@@ -55,9 +55,9 @@ const HomeBanner = () => {
             {/* Student Image overlapping box */}
             <div className="hidden md:block relative -mt-24 md:-mt-32 z-10">
               <img
-                src="https://images.unsplash.com/photo-1629273229214-d96be4552b9a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://i.ibb.co.com/mCgLQBvX/2151064034.jpg"
                 alt="Students"
-                className="w-40 md:w-xl rounded-full shadow-xl"
+                className="w-40 md:w-xl rounded-full shadow-xl bg-cover"
               />
             </div>
           </div>

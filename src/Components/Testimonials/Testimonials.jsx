@@ -65,7 +65,7 @@ const Testimonials = () => {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 bg-gray-50 hind-siliguri-regular">
+    <div className="px-4 sm:px-6 lg:px-8 hind-siliguri-regular my-8">
       <div className="max-w-7xl mx-auto">
         <TitleSec subTitle="testimonials.subTitle" title="testimonials.title" />
 

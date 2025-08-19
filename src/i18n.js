@@ -123,6 +123,29 @@ const resources = {
                     'After School Maktab Online Institute Every Evening, Enlightened by Religious Knowledge',
                 exploreButton: 'Explore Courses',
                 studentImageAlt: 'Students',
+            },
+            "chooseUs": {
+                "title": "Why Choose Our Islamic Institute",
+                "description": "Your religious education, our responsibility. Religious education made easy and accurate. After School Maktab Online Institute is here for you",
+                "statStudents": "Students",
+                "cards": {
+                    "onlinePrograms": {
+                        "title": "Online Academics Programs",
+                        "description": "Our institute is run by experienced teachers who provide separate instruction for boys and girls with flexible schedules."
+                    },
+                    "learnBooks": {
+                        "title": "Learn Islamic Books",
+                        "description": "Our online programs are designed to meet each student's unique needs with personalized learning experiences."
+                    },
+                    "quranClasses": {
+                        "title": "Online Quran Classes",
+                        "description": "Our Quran classes provide deep, personalized learning with proper guidance and flexibility for spiritual growth."
+                    },
+                    "valueStudents": {
+                        "title": "We Value Our Students",
+                        "description": "We prioritize students' development with dedicated attention and a supportive environment for success."
+                    }
+                }
             }
         },
 
@@ -250,6 +273,29 @@ const resources = {
                     'আফটার স্কুল মাকতাব অনলাইন ইনস্টিটিউট প্রতি সন্ধ্যায়, ধর্মীয় জ্ঞানে আলোকিত',
                 exploreButton: 'আমাদের কোর্সগুলি',
                 studentImageAlt: 'ছাত্রছাত্রী',
+            },
+            "chooseUs": {
+                "title": "কেন আমাদের ইনস্টিটিউটটি নির্বাচন করবেন",
+                "description": "আপনার ধর্মীয় শিক্ষা, আমাদের দায়িত্ব। ধর্মীয় শিক্ষাকে সহজ এবং নির্ভুল করে তোলা। আফটার স্কুল মক্তব অনলাইন ইনস্টিটিউট আপনার জন্য এখানেই রয়েছে",
+                "statStudents": "শিক্ষার্থী",
+                "cards": {
+                    "onlinePrograms": {
+                        "title": "অনলাইন একাডেমিক প্রোগ্রাম",
+                        "description": "আমাদের ইনস্টিটিউট অভিজ্ঞ শিক্ষকদের দ্বারা পরিচালিত হয় যারা নমনীয় সময়সূচী সহ ছেলে এবং মেয়েদের জন্য পৃথক নির্দেশনা প্রদান করে।"
+                    },
+                    "learnBooks": {
+                        "title": "ইসলামিক বই শিখুন",
+                        "description": "আমাদের অনলাইন প্রোগ্রামগুলি ব্যক্তিগতকৃত শিক্ষার অভিজ্ঞতার সাথে প্রতিটি শিক্ষার্থীর অনন্য প্রয়োজন মেটাতে ডিজাইন করা হয়েছে।"
+                    },
+                    "quranClasses": {
+                        "title": "অনলাইন কুরআন ক্লাস",
+                        "description": "আমাদের কুরআন ক্লাসগুলি আধ্যাত্মিক বিকাশের জন্য যথাযথ নির্দেশনা এবং নমনীয়তার সাথে গভীর, ব্যক্তিগতকৃত শিক্ষা প্রদান করে।"
+                    },
+                    "valueStudents": {
+                        "title": "আমরা আমাদের শিক্ষার্থীদের মূল্য দিই",
+                        "description": "আমরা সফলতার জন্য একটি সহায়ক পরিবেশ এবং নিবেদিত মনোযোগ সহ শিক্ষার্থীদের বিকাশকে অগ্রাধিকার দিই।"
+                    }
+                }
             }
 
 

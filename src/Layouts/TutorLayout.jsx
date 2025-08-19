@@ -3,10 +3,12 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { AuthContext } from "../Providers/AuthProvider";
 import Swal from "sweetalert2";
+import useCurrentUser from "../CustomHooks/useCurrentUser";
 
 const TutorLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
+  const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -55,14 +57,18 @@ const TutorLayout = () => {
   );
 
   const tutorProfile = (
-    <div className="mt-4 border-t border-gray-300 pt-4 text-center">
+    <div className="mt-6 border-t pt-4 text-center">
       <img
-        src="/tutor-avatar.png"
-        alt="Tutor"
-        className="w-14 h-14 rounded-full mx-auto mb-2"
+        src={
+          currentUser?.image ||
+          "https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+        }
+        alt={currentUser?.name}
+        className="w-16 h-16 rounded-full mx-auto mb-2"
       />
-      <Link to="/tutor/myProfile">
-        <h2 className="text-sm font-semibold">{user?.displayName}</h2>
+
+      <Link to="/admin/myProfile" className="block px-4 hover:bg-gray-100">
+        {currentUser?.name}
       </Link>
     </div>
   );

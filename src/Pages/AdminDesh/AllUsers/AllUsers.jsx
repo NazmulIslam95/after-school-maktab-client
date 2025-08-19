@@ -1,4 +1,5 @@
-import { FaChalkboardTeacher, FaTrashAlt } from "react-icons/fa";
+import { useState, useMemo } from "react";
+import { FaChalkboardTeacher, FaTrashAlt, FaSearch } from "react-icons/fa";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
 import useAllUsers from "../../../CustomHooks/useAllUsers";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
@@ -7,7 +8,25 @@ import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const { users, loading, refetch } = useAllUsers();
-  const axiosSecure = useAxiosSecure(); // ✅ use secure axios instance with token
+  const axiosSecure = useAxiosSecure();
+  
+  // State for search and filter
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+
+  // Filter users based on search term and role filter
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      const matchesSearch = 
+        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.PhoneNo?.includes(searchTerm);
+      
+      const matchesRole = roleFilter === "all" || user.role === roleFilter;
+      
+      return matchesSearch && matchesRole;
+    });
+  }, [users, searchTerm, roleFilter]);
 
   const handleChangeRole = async (userId, newRole) => {
     const confirmResult = await Swal.fire({
@@ -82,6 +101,40 @@ const AllUsers = () => {
   return (
     <div>
       <DashboardBanner title="All Users" subTitle="Users" />
+      
+      {/* Search and Filter Controls */}
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 mb-2 p-4 bg-white rounded-lg shadow-sm">
+        <div className="relative w-full md:w-1/2">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <FaSearch className="text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search by name, email or phone..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          />
+        </div>
+        
+        <div className="flex gap-3 w-full md:w-auto">
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className="border border-gray-300 px-4 py-2 rounded-md bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+          >
+            <option value="all">All Users</option>
+            <option value="user">Users</option>
+            <option value="admin">Admins</option>
+            <option value="tutor">Tutors</option>
+          </select>
+          
+          {/* <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-md flex items-center">
+            <span className="text-sm font-medium">Total: {filteredUsers.length}</span>
+          </div> */}
+        </div>
+      </div>
+
       <div className="overflow-x-auto libertinus-sans-regular">
         <table className="min-w-5xl mx-auto bg-white rounded-t-xl shadow-md ">
           <thead className="bg-gradient-to-r from-blue-700 to-blue-500 text-white">
@@ -95,53 +148,60 @@ const AllUsers = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
-              <tr
-                key={user._id}
-                className="border-b border-blue-100 hover:bg-blue-50 transition-all duration-300 ease-in-out transform "
-              >
-                <td className="pl-4 text-gray-600">{index + 1}</td>
-                <td className="p-2 font-medium flex items-center gap-3 text-gray-700">
-                  {user.name}
-                  {user.role === "admin" && (
-                    <MdOutlineAdminPanelSettings className="text-blue-700 text-2xl" />
-                  )}
-                  {user.role === "tutor" && (
-                    // <MdOutlineAdminPanelSettings className="text-blue-700 text-2xl animate-pulse" />
-                    <FaChalkboardTeacher className="text-blue-700 text-2xl " />
-                  )}
-                </td>
-                <td className="p-2 text-gray-500">{user.email}</td>
-                <td className="p-2 text-gray-500">{user.PhoneNo}</td>
-                <td className="p-2">
-                  <select
-                    value={user.role}
-                    onChange={(e) => handleChangeRole(user._id, e.target.value)}
-                    className="border border-blue-200 px-4 rounded-md bg-white text-gray-600 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 hover:bg-blue-50"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                    <option value="tutor">Tutor</option>
-                  </select>
-                </td>
-                <td className="p-2 text-center">
-                  <div className="flex gap-4 justify-center text-lg">
-                    <button
-                      onClick={() => handleDeleteUser(user)}
-                      title="Delete User"
-                      disabled={user.role === "admin" || user.role === "tutor"}
-                      className={`${
-                        user.role === "admin" || user.role === "tutor"
-                          ? "text-gray-400 cursor-not-allowed"
-                          : "text-red-400 hover:text-red-600 transform hover:scale-125 transition-all duration-200"
-                      }`}
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user, index) => (
+                <tr
+                  key={user._id}
+                  className="border-b border-blue-100 hover:bg-blue-50 transition-all duration-300 ease-in-out transform "
+                >
+                  <td className="pl-4 text-gray-600">{index + 1}</td>
+                  <td className="p-2 font-medium flex items-center gap-3 text-gray-700">
+                    {user.name}
+                    {user.role === "admin" && (
+                      <MdOutlineAdminPanelSettings className="text-blue-700 text-2xl" />
+                    )}
+                    {user.role === "tutor" && (
+                      <FaChalkboardTeacher className="text-blue-700 text-2xl " />
+                    )}
+                  </td>
+                  <td className="p-2 text-gray-500">{user.email}</td>
+                  <td className="p-2 text-gray-500">{user.PhoneNo}</td>
+                  <td className="p-2">
+                    <select
+                      value={user.role}
+                      onChange={(e) => handleChangeRole(user._id, e.target.value)}
+                      className="border border-blue-200 px-4 rounded-md bg-white text-gray-600 focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all duration-200 hover:bg-blue-50"
                     >
-                      <FaTrashAlt />
-                    </button>
-                  </div>
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                      <option value="tutor">Tutor</option>
+                    </select>
+                  </td>
+                  <td className="p-2 text-center">
+                    <div className="flex gap-4 justify-center text-lg">
+                      <button
+                        onClick={() => handleDeleteUser(user)}
+                        title="Delete User"
+                        disabled={user.role === "admin" || user.role === "tutor"}
+                        className={`${
+                          user.role === "admin" || user.role === "tutor"
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-red-400 hover:text-red-600 transform hover:scale-125 transition-all duration-200"
+                        }`}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center py-8 text-gray-500">
+                  No users found matching your criteria
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

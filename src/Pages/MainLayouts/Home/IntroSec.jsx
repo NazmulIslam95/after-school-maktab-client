@@ -134,20 +134,15 @@ const IntroSec = () => {
         <div className="relative rounded-lg  text-white px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <img
-              src="https://naudummy.com/darsgah/wp-content/uploads/2024/04/reached-over.jpg"
+              src="https://aalimlearning.com/assets/images/resources/img1.jpg"
               alt="Reached Over"
-              className="w-96 rounded-full shadow-lg shadow-[#000000] mb-4 md:mb-0"
+              className="w-96 h-72 rounded-full shadow-lg shadow-[#000000] mb-4 md:mb-0"
             />
           </div>
           <div className="text-center md:text-left space-y-8 w-full md:w-2/3">
-            <h2 className="text-2xl md:text-4xl font-bold text-white">
-              {/* Alhamdulillah! Our numbers <br /> have surpassed 2 Thousand. */}
+            <h2 className="text-xl md:text-3xl font-bold text-white">
               {t("homeBanner.description")}
             </h2>
-            {/* <p className="text-xs md:text-base text-white">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et.
-            </p> */}
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Banner from "../../../Components/Banner/Banner";
-import Footer from "../../../Components/Footer/Footer";
 import Navbar from "../../../Components/Navbar/Navbar";
 import Swal from "sweetalert2";
 import { useContext, useState } from "react";
@@ -13,7 +12,6 @@ const SignUp = () => {
   const location = useLocation();
   const axiosPublic = useAxiosPublic();
   const [isLoading, setIsLoading] = useState(false);
-  const [referralCode, setReferralCode] = useState("");
   const from = location.state?.from || "/";
 
   const handleSignup = (event) => {
@@ -37,7 +35,6 @@ const SignUp = () => {
               email,
               PhoneNo: phoneNo,
               password: password,
-              referredBy: referralCode || null,
             };
 
             axiosPublic
@@ -142,23 +139,6 @@ const SignUp = () => {
               <div className="space-y-2 text-sm">
                 <label
                   className="text-sm font-medium leading-none text-zinc-700"
-                  htmlFor="referralCode"
-                >
-                  Referral Code (Optional)
-                </label>
-                <input
-                  className="flex h-10 w-full rounded-md border px-3 py-2 focus-visible:outline-none"
-                  id="referralCode"
-                  placeholder="Enter Referral Code (If Any)"
-                  name="referralCode"
-                  type="text"
-                  value={referralCode}
-                  onChange={(e) => setReferralCode(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2 text-sm">
-                <label
-                  className="text-sm font-medium leading-none text-zinc-700"
                   htmlFor="password_"
                 >
                   Password
@@ -217,7 +197,6 @@ const SignUp = () => {
           </p>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -32,7 +32,7 @@ const Home = () => {
       <HomeBanner />
       <IntroSec />
       <OurTutors />
-      {/* <ChooseUs/> */}
+      <ChooseUs/>
       <Testimonials />
       <Footer />
     </div>

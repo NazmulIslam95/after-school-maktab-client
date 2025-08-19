@@ -23,7 +23,7 @@ const OurTutors = () => {
     <div>
       <TitleSec subTitle="outTutors.subTitle" title="outTutors.title" />
 
-      <div className=" gap-6 px-4 max-w-6xl mx-auto">
+      <div className=" gap-6 px-4 mb-12 max-w-6xl mx-auto">
         <Slider {...settings}>
           {/* Slider for Tutor Cards */}
           {tutors.map((tutor) => (
