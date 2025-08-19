@@ -36,6 +36,10 @@ const resources = {
                 "subTitle": "Welcome To The After School Maktab",
                 "title": "Our featured Islamic Courses"
             },
+            "rStudents": {
+                "subTitle": "Our Students",
+                "title": "Some Of Our Recent Student"
+            },
             "outTutors": {
                 "subTitle": "10 Experienced Islamic Teachers",
                 "title": "Meet Our Teachers"
@@ -185,6 +189,10 @@ const resources = {
             "fCourses": {
                 "subTitle": "আফটার স্কুল মক্তবে আপনাকে স্বাগতম",
                 "title": "আমাদের নির্বাচিত ইসলামী কোর্সসমূহ"
+            },
+            "rStudents": {
+                "subTitle": "আমাদের ছাত্ররা",
+                "title": "আমাদের সাম্প্রতিক এডমিশন নেয়া কিছু ছাত্র"
             },
             "outTutors": {
                 "subTitle": "১ জন অভিজ্ঞ ইসলামী শিক্ষক",
