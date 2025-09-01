@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../Providers/AuthProvider";
+import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
   baseURL: "https://after-school-maktab-server.vercel.app/",
@@ -10,7 +10,7 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const requestInterceptor = axiosSecure.interceptors.request.use(

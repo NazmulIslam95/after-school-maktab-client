@@ -1,14 +1,14 @@
-import { useState, useContext } from "react";
-import { AuthContext } from "../../../Providers/AuthProvider";
+import { useState } from "react";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
 import Swal from "sweetalert2";
 import useAllTutors from "../../../CustomHooks/useAllTutors";
 import { MdRateReview } from "react-icons/md";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const MyCourses = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const {
     tutors,
     isLoading: tutorsLoading,

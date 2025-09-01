@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
-import { AuthContext } from "../Providers/AuthProvider";
 import Swal from "sweetalert2";
 import useCurrentUser from "../CustomHooks/useCurrentUser";
+import useAuth from "../CustomHooks/useAuth";
 
 const StudentLayout = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuth();
   const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
 

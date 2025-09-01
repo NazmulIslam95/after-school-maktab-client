@@ -1,12 +1,11 @@
 // useCurrentUser.js
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
-import { useContext } from "react";
-import { AuthContext } from "../Providers/AuthProvider";
+import useAuth from "./useAuth";
 
 const useCurrentUser = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const fetchCurrentUser = async () => {
     if (!user?.email) {

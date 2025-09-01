@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import useAxiosSecure from "./useAxiosSecure";
-import { AuthContext } from "../Providers/AuthProvider";
 import { toast } from "react-toastify";
+import useAuth from "./useAuth";
 
 const useStudentPurchases = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -7,9 +7,9 @@ import Footer from "../../../Components/Footer/Footer";
 const CourseDetails = () => {
   const course = useLoaderData();
   const navigate = useNavigate();
-  // console.log("Course Data:", course);
   const [duration, setDuration] = useState("30min");
   const [days, setDays] = useState("3days");
+  const [showScholarshipModal, setShowScholarshipModal] = useState(false);
 
   const getSelectedPrice = () => {
     if (course?.price?.[duration]?.[days]) {
@@ -72,7 +72,9 @@ const CourseDetails = () => {
                 {course?.description?.bn}
               </p>
               <p className="text-sm uppercase text-gray-600 mb-3 sm:mb-4 font-bold flex items-center justify-center sm:justify-start gap-2">
-                <span className="text-blue-900 capitalize font-bold">📋 Session:</span>{" "}
+                <span className="text-blue-900 capitalize font-bold">
+                  📋 Session:
+                </span>{" "}
                 {course?.type === "1-to-1" ? "One To One" : course?.type}
               </p>
 
@@ -86,6 +88,18 @@ const CourseDetails = () => {
                     {cat}
                   </span>
                 ))}
+              </div>
+
+              {/* Scholarship Button */}
+              <div className="mb-4 sm:mb-6 flex justify-center sm:justify-start">
+                <button
+                  onClick={() => setShowScholarshipModal(true)}
+                  className="flex items-center gap-2 bg-green-100 text-green-800 hover:bg-green-200 px-4 py-2 rounded-full transition-colors duration-200 hind-siliguri-bold"
+                >
+                  <span className="text-lg">🎓</span>
+                  ভর্তির ক্ষেত্রে স্কলারশিপ সুবিধা
+                  <span className="text-lg">ℹ️</span>
+                </button>
               </div>
 
               {/* Conditional Pricing */}
@@ -152,6 +166,96 @@ const CourseDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Scholarship Modal */}
+      {showScholarshipModal && (
+        <div className="fixed inset-0 bg-[#0000007d] flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold text-blue-900 hind-siliguri-bold">
+                  🎓 ভর্তির ক্ষেত্রে স্কলারশিপ সুবিধা
+                </h2>
+                <button
+                  onClick={() => setShowScholarshipModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  &times;
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <p className="text-gray-700 hind-siliguri-regular">
+                  আমাদের প্রতিষ্ঠান শিক্ষার্থীদের পারিবারিক আর্থিক স্বচ্ছলতা ও
+                  পারস্পরিক সামাজিক সংযোগ বৃদ্ধির লক্ষ্যে বিশেষ স্কলারশিপ
+                  ব্যবস্থা চালু করেছে। এর মাধ্যমে দাওয়াহ্‌র আলো পরিবারে,
+                  বন্ধুমহলে এবং সমাজে ছড়িয়ে পড়বে, ইনশাআল্লাহ।
+                </p>
+
+                <div>
+                  <h3 className="text-lg font-semibold text-blue-800 mb-3 hind-siliguri-bold">
+                    স্কলারশিপের ধরনসমূহ
+                  </h3>
+
+                  <div className="bg-blue-50 p-4 rounded-lg mb-4">
+                    <h4 className="font-semibold text-blue-700 mb-2 hind-siliguri-bold">
+                      1. Waiver – ২০% ছাড়
+                    </h4>
+                    <p className="text-gray-600 hind-siliguri-regular">
+                      একই পরিবারের একাধিক সদস্য ভর্তি হলে, প্রতিটি অতিরিক্ত
+                      শিক্ষার্থী তার মাসিক বেতনে ২০% ছাড় উপভোগ করবে। এ সুবিধা
+                      নিয়মিত মাসিক ফি-এর ক্ষেত্রে প্রযোজ্য।
+                    </p>
+                  </div>
+
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-700 mb-2 hind-siliguri-bold">
+                      2. Referral Waiver – ১৫% ছাড় (উভয়ের জন্য)
+                    </h4>
+                    <p className="text-gray-600 hind-siliguri-regular">
+                      আপনার পরিচয়ে কোনো নতুন শিক্ষার্থী ভর্তি হলে, আপনি এবং নতুন
+                      শিক্ষার্থী উভয়েই মাসিক বেতনে ১৫% ছাড় পাবেন। এ সুবিধা ভর্তি
+                      প্রক্রিয়া সম্পন্ন হওয়ার পরবর্তী মাস থেকে কার্যকর হবে।
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r">
+                  <h4 className="font-semibold text-yellow-800 mb-2 hind-siliguri-bold">
+                    📌 শর্তাবলি
+                  </h4>
+                  <ul className="text-yellow-700 space-y-2 hind-siliguri-regular">
+                    <li>
+                      • সকল ছাড় কেবল নিয়মিত মাসিক বেতনের ক্ষেত্রে প্রযোজ্য।
+                    </li>
+                    <li>
+                      • একই পরিবারের সদস্য যতজন ভর্তি হোন না কেন—ভাই-বোন,
+                      মা-বাবা কিংবা স্বামী-স্ত্রী—সকলেই এই সুবিধার আওতায় আসবেন।
+                    </li>
+                    <li>
+                      • Referral Waiver স্কলারশিপেও যতজন রেফারেন্সের মাধ্যমে
+                      ভর্তি হবে, প্রত্যেকেই উক্ত ছাড়ের অন্তর্ভুক্ত হবে।
+                    </li>
+                    <li>
+                      • ছাড় প্রাপ্তির জন্য প্রয়োজনীয় প্রমাণপত্র ও তথ্যাদি প্রদান
+                      করা বাধ্যতামূলক।
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="flex justify-end mt-6">
+                  <button
+                    onClick={() => setShowScholarshipModal(false)}
+                    className="bg-blue-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-800 transition-colors"
+                  >
+                    বুঝেছি
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>

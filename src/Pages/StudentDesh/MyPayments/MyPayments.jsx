@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
-import { AuthContext } from "../../../Providers/AuthProvider";
 import useStudentPurchases from "../../../CustomHooks/useStudentPurchases";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const MyPayments = () => {
-  const { user, loading: authLoading } = useContext(AuthContext);
+  const { user, loading: authLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
   const {
     purchases,

@@ -1,3 +1,4 @@
+// src/Providers/AuthProvider.jsx
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState, createContext } from "react";
@@ -10,9 +11,10 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  sendPasswordResetEmail, // Add this import
 } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
-import useAxiosPublic from './../CustomHooks/useAxiosPublic';
+import useAxiosPublic from "./../CustomHooks/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -51,6 +53,12 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  // Add password reset function
+  const resetPassword = (email) => {
+    setLoading(true);
+    return sendPasswordResetEmail(auth, email);
+  };
+
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -60,7 +68,7 @@ const AuthProvider = ({ children }) => {
         axiosPublic.post("/jwt", userInfo).then((res) => {
           if (res.data.token) {
             localStorage.setItem("access-token", res.data.token);
-            setLoading(false); // <-- only stop loading after token is saved
+            setLoading(false);
           }
         });
       } else {
@@ -80,6 +88,7 @@ const AuthProvider = ({ children }) => {
     updateUser,
     googleSignIn,
     logout,
+    resetPassword, // Add the reset function to context
   };
 
   return (

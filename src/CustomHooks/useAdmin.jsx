@@ -1,10 +1,9 @@
-import { useContext } from "react";
-import { AuthContext } from "../Providers/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "./useAxiosSecure";
+import useAuth from "./useAuth";
 
 const useAdmin = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
 
   const {

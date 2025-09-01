@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
-import { AuthContext } from "../../../Providers/AuthProvider";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import useAllTutors from "../../../CustomHooks/useAllTutors";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const AssignedDemoCls = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [demoClasses, setDemoClasses] = useState([]);
   const [zoomLink, setZoomLink] = useState("");

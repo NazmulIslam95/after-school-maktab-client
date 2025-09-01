@@ -4,13 +4,12 @@ import IntroSec from "./IntroSec";
 import Footer from "../../../Components/Footer/Footer";
 import ChooseUs from "./ChooseUs";
 import OurTutors from "./OurTutors";
-import { AuthContext } from "../../../Providers/AuthProvider";
-import { useContext } from "react";
 import { Trefoil } from "ldrs/react";
 import Testimonials from "../../../Components/Testimonials/Testimonials";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const Home = () => {
-  const { loading } = useContext(AuthContext);
+  const { loading } = useAuth();
 
   if (loading) {
     return (
@@ -32,7 +31,7 @@ const Home = () => {
       <HomeBanner />
       <IntroSec />
       <OurTutors />
-      <ChooseUs/>
+      <ChooseUs />
       <Testimonials />
       <Footer />
     </div>

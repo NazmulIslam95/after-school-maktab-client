@@ -2,12 +2,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Banner from "../../../Components/Banner/Banner";
 import Navbar from "../../../Components/Navbar/Navbar";
 import Swal from "sweetalert2";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../../Providers/AuthProvider";
+import { useState } from "react";
 import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const SignUp = () => {
-  const { createUser, updateUser } = useContext(AuthContext);
+  const { createUser, updateUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const axiosPublic = useAxiosPublic();

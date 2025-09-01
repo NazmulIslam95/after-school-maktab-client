@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { WiSunrise } from "react-icons/wi";
@@ -7,15 +7,15 @@ import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 import { FaChalkboardTeacher, FaFacebookF, FaYoutube } from "react-icons/fa";
 import axios from "axios";
 import { CiSettings, CiUser } from "react-icons/ci";
-import { AuthContext } from "../../Providers/AuthProvider";
 import useAdmin from "../../CustomHooks/useAdmin";
 import { RxDashboard } from "react-icons/rx";
 import useTutor from "../../CustomHooks/useTutor";
 import { useTranslation } from "react-i18next";
+import useAuth from "../../CustomHooks/useAuth";
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useAuth();
   const [isAdmin, isAdminLoading] = useAdmin();
   const [isTutor, isTutorLoading] = useTutor();
   const [scrolled, setScrolled] = useState(false);

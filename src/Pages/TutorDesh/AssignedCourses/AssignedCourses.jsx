@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
-import { AuthContext } from "../../../Providers/AuthProvider";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import useAllTutors from "../../../CustomHooks/useAllTutors";
 import { MdRateReview } from "react-icons/md";
 import Swal from "sweetalert2";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const AssignedCourses = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const { tutors } = useAllTutors();
   const [courses, setCourses] = useState([]);
   const [zoomLink, setZoomLink] = useState("");

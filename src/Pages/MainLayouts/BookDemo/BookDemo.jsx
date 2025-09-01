@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../../Providers/AuthProvider";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import Navbar from "../../../Components/Navbar/Navbar";
 import Banner from "../../../Components/Banner/Banner";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const BookDemo = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const location = useLocation();
   const axiosSecure = useAxiosSecure();
   const { courseId, courseName, type } = location.state || {};

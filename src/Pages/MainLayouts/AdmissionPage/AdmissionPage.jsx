@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../Providers/AuthProvider";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Navbar from "../../../Components/Navbar/Navbar";
 import Banner from "../../../Components/Banner/Banner";
@@ -8,13 +7,14 @@ import { Trefoil } from "ldrs/react";
 import useCurrentUser from "../../../CustomHooks/useCurrentUser";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import useAxiosPublic from "../../../CustomHooks/useAxiosPublic";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const AdmissionPage = () => {
   const { state } = useLocation();
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useAuth();
   const { currentUser, loading: userLoading } = useCurrentUser();
 
   const [formData, setFormData] = useState({

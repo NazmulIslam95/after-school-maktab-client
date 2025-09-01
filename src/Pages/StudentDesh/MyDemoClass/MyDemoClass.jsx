@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
-import { AuthContext } from "../../../Providers/AuthProvider";
 import useAllTutors from "../../../CustomHooks/useAllTutors";
-import { Link } from "react-router-dom";
+import useAuth from "../../../CustomHooks/useAuth";
 
 const MyDemoClass = () => {
   const axiosSecure = useAxiosSecure();
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useAuth();
   const { tutors } = useAllTutors();
   const [demoRequests, setDemoRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
