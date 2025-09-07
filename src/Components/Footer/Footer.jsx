@@ -42,7 +42,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <hr className="my-6 border-gray-200 md:my-6" />
+        <hr className="my-2 border-gray-200 md:my-4" />
 
         <div className="max-w-7xl mx-auto flex flex-col items-center sm:flex-row sm:justify-between mb-16 md:mb-0">
           <p className="text-sm text-gray-500">© Copyright 2025.</p>

@@ -203,7 +203,7 @@ const CourseDetails = () => {
                     </h4>
                     <p className="text-gray-600 hind-siliguri-regular">
                       একই পরিবারের একাধিক সদস্য ভর্তি হলে, প্রতিটি অতিরিক্ত
-                      শিক্ষার্থী তার মাসিক বেতনে ২০% ছাড় উপভোগ করবে। এ সুবিধা
+                      শিক্ষার্থী তার মাসিক বেতনে <span className="font-bold">২০%</span> ছাড় উপভোগ করবে। এ সুবিধা
                       নিয়মিত মাসিক ফি-এর ক্ষেত্রে প্রযোজ্য।
                     </p>
                   </div>
@@ -214,7 +214,7 @@ const CourseDetails = () => {
                     </h4>
                     <p className="text-gray-600 hind-siliguri-regular">
                       আপনার পরিচয়ে কোনো নতুন শিক্ষার্থী ভর্তি হলে, আপনি এবং নতুন
-                      শিক্ষার্থী উভয়েই মাসিক বেতনে ১৫% ছাড় পাবেন। এ সুবিধা ভর্তি
+                      শিক্ষার্থী উভয়েই মাসিক বেতনে <span className="font-bold">১৫%</span> ছাড় পাবেন। এ সুবিধা ভর্তি
                       প্রক্রিয়া সম্পন্ন হওয়ার পরবর্তী মাস থেকে কার্যকর হবে।
                     </p>
                   </div>
@@ -233,7 +233,7 @@ const CourseDetails = () => {
                       মা-বাবা কিংবা স্বামী-স্ত্রী—সকলেই এই সুবিধার আওতায় আসবেন।
                     </li>
                     <li>
-                      • Referral Waiver স্কলারশিপেও যতজন রেফারেন্সের মাধ্যমে
+                      • Referral Waiver স্কলারশিপেও যতজন আপনার মাধ্যমে
                       ভর্তি হবে, প্রত্যেকেই উক্ত ছাড়ের অন্তর্ভুক্ত হবে।
                     </li>
                     <li>
@@ -246,7 +246,7 @@ const CourseDetails = () => {
                 <div className="flex justify-end mt-6">
                   <button
                     onClick={() => setShowScholarshipModal(false)}
-                    className="bg-blue-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-800 transition-colors"
+                    className="hind-siliguri-regular bg-blue-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-800 transition-colors"
                   >
                     বুঝেছি
                   </button>
