@@ -413,19 +413,9 @@ const MyPayments = () => {
                 } hover:shadow-xl transition-all duration-300`}
               >
                 <h3 className="font-bold text-xl text-gray-900 mb-3">
-                  {payment.studentName}
+                  {payment.courseName}
                 </h3>
                 <div className="space-y-2 text-sm text-gray-700">
-                  <p>
-                    <span className="font-semibold text-[#082f72]">Email:</span>{" "}
-                    {payment.studentEmail}
-                  </p>
-                  <p>
-                    <span className="font-semibold text-[#082f72]">
-                      Course:
-                    </span>{" "}
-                    {payment.courseName}
-                  </p>
                   <p>
                     <span className="font-semibold text-[#082f72]">Month:</span>{" "}
                     {payment.month} {payment.year}
@@ -460,13 +450,34 @@ const MyPayments = () => {
                     <span className="font-semibold text-[#082f72]">
                       Payment Date:
                     </span>{" "}
-                    {payment.paymentDate
-                      ? new Date(payment.paymentDate).toLocaleDateString(
+                    {payment.createdAt
+                      ? new Date(payment.createdAt).toLocaleDateString(
                           "en-US",
                           {
                             month: "long",
                             day: "numeric",
                             year: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true,
+                          }
+                        )
+                      : "N/A"}
+                  </p>
+                  <p>
+                    <span className="font-semibold text-[#082f72]">
+                      Confirm Date:
+                    </span>{" "}
+                    {payment.updatedAt
+                      ? new Date(payment.updatedAt).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true,
                           }
                         )
                       : "N/A"}

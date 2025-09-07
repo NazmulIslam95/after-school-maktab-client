@@ -172,13 +172,34 @@ const PaymentHistory = () => {
                         <span className="font-semibold text-[#082f72]">
                           Payment Date:
                         </span>{" "}
-                        {payment.paymentDate
-                          ? new Date(payment.paymentDate).toLocaleDateString(
+                        {payment.createdAt
+                          ? new Date(payment.createdAt).toLocaleDateString(
                               "en-US",
                               {
                                 month: "long",
                                 day: "numeric",
                                 year: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              }
+                            )
+                          : "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold text-[#082f72]">
+                          Confirm Date:
+                        </span>{" "}
+                        {payment.updatedAt
+                          ? new Date(payment.updatedAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
                               }
                             )
                           : "N/A"}
@@ -215,7 +236,7 @@ const PaymentHistory = () => {
                           onClick={() => handleMarkDenied(payment._id)}
                           className="flex-1 px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition shadow-sm"
                         >
-                          Payment Denied 
+                          Payment Denied
                         </button>
                       </div>
                     )}

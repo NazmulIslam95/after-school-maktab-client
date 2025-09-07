@@ -36,6 +36,7 @@ import AllPdf from "../Pages/AdminDesh/AllPdf/AllPdf";
 import PrivateRoute from "./PrivateRoute";
 import AddRecentStudent from "../Pages/AdminDesh/AddRecentStudent/AddRecentStudent";
 import AllRecentStudents from "../Pages/AdminDesh/AllRecentStudents/AllRecentStudents";
+import Terms from "../Pages/MainLayouts/Terms/Terms";
 
 export const router = createBrowserRouter([
   {
@@ -106,6 +107,10 @@ export const router = createBrowserRouter([
             <BookDemo />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "terms",
+        element: <Terms />,
       },
     ],
   },

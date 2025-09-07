@@ -28,7 +28,7 @@ const Footer = () => {
               About
             </Link>
             <Link
-              to="/ourTeachers"
+              to="/teachers"
               className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500"
             >
               Teachers
