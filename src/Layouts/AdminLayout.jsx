@@ -38,6 +38,9 @@ const AdminLayout = () => {
       <Link to="/admin/allUsers" className="block px-4 p-1 hover:bg-gray-100">
         Users
       </Link>
+      <Link to="/admin/allRecentStudents" className="block px-4 p-1 hover:bg-gray-100">
+        Recent Students
+      </Link>
       <Link to="/admin/allTutors" className="block px-4 p-1 hover:bg-gray-100">
         Tutors
       </Link>
@@ -61,6 +64,12 @@ const AdminLayout = () => {
         className="block px-4 p-1 hover:bg-gray-100"
       >
         Add New Tutor
+      </Link>
+      <Link
+        to="/admin/addRecentStudent"
+        className="block px-4 p-1 hover:bg-gray-100"
+      >
+        Add Recent Student
       </Link>
       <Link
         to="/admin/addNewTestimonial"

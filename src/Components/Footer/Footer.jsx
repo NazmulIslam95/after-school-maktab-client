@@ -28,22 +28,16 @@ const Footer = () => {
               About
             </Link>
             <Link
-              to="/team"
+              to="/ourTeachers"
               className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500"
             >
-              Teams
+              Teachers
             </Link>
             <Link
-              to="/privacy"
+              to="/terms"
               className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500"
             >
-              Privacy
-            </Link>
-            <Link
-              to="/cookies"
-              className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500"
-            >
-              Cookies
+              Terms & Policy
             </Link>
           </div>
         </div>

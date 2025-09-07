@@ -34,6 +34,8 @@ import MyProfile from "../Pages/StudentDesh/MyProfile/MyProfile";
 import TutorDetails from "../Pages/MainLayouts/TutorDetails/TutorDetails";
 import AllPdf from "../Pages/AdminDesh/AllPdf/AllPdf";
 import PrivateRoute from "./PrivateRoute";
+import AddRecentStudent from "../Pages/AdminDesh/AddRecentStudent/AddRecentStudent";
+import AllRecentStudents from "../Pages/AdminDesh/AllRecentStudents/AllRecentStudents";
 
 export const router = createBrowserRouter([
   {
@@ -162,6 +164,14 @@ export const router = createBrowserRouter([
       {
         path: "myProfile",
         element: <MyProfile />,
+      },
+      {
+        path: "addRecentStudent",
+        element: <AddRecentStudent />,
+      },
+      {
+        path: "allRecentStudents",
+        element: <AllRecentStudents />,
       },
     ],
   },

@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import useStudentPurchases from "../../../CustomHooks/useStudentPurchases";
@@ -12,8 +12,7 @@ const MyPayments = () => {
   const {
     purchases,
     loading: purchasesLoading,
-    // eslint-disable-next-line no-unused-vars
-    refetch: refetchPurchases,
+    // refetch: refetchPurchases,
   } = useStudentPurchases();
   const [payments, setPayments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,6 +25,41 @@ const MyPayments = () => {
     senderInfo: "",
     amount: "",
   });
+
+  // Payment method details
+  const paymentMethods = {
+    bKash: {
+      name: "bKash",
+      number: "01787110752",
+      type: "Personal",
+      instructions:
+        "Send money to this number and include your student ID in the reference.",
+    },
+    Nagad: {
+      name: "Nagad",
+      number: "01787110752",
+      type: "Personal",
+      instructions:
+        "Send money to this number and include your student ID in the reference.",
+    },
+    Rocket: {
+      name: "Rocket",
+      number: "01787110752",
+      type: "Personal",
+      instructions:
+        "Send money to this number and include your student ID in the reference.",
+    },
+    Bank: {
+      name: "Bank Transfer",
+      accountName: "MD Eyasin Arafat",
+      accountNumber: "20502036700174016",
+      bankName: "IBBL",
+      branch: "Cantonment Branch Dhaka",
+      routingNumber: "125260738",
+      swiftCode: "IBBLBDDH",
+      instructions: "Include your student ID in the transfer reference.",
+    },
+  };
 
   // Fetch student's payment history
   useEffect(() => {
@@ -60,7 +94,20 @@ const MyPayments = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [name]: value };
+
+      // If course is selected, auto-fill the amount
+      if (name === "courseId" && value) {
+        const selectedCourse = purchases.find((p) => p._id === value);
+        if (selectedCourse) {
+          updatedFormData.amount = selectedCourse.price || "";
+        }
+      }
+
+      return updatedFormData;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -145,9 +192,7 @@ const MyPayments = () => {
         className="bg-gradient-to-r from-[#082f72] to-purple-600 text-white rounded-xl shadow-lg"
       />
       <div className="max-w-6xl mx-auto p-6">
-        <h2 className="text-2xl font-bold text-[#082f72] mb-6">
-          Submit Payment
-        </h2>
+        <h2 className="text-2xl font-bold text-[#082f72] mb-6">New Payment</h2>
         <form
           onSubmit={handleSubmit}
           className="bg-white p-6 rounded-2xl shadow-lg mb-8"
@@ -226,8 +271,9 @@ const MyPayments = () => {
                 name="amount"
                 value={formData.amount}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#082f72] bg-gray-100"
                 required
+                readOnly
               />
             </div>
             <div>
@@ -242,10 +288,10 @@ const MyPayments = () => {
                 required
               >
                 <option value="">Select Method</option>
-                <option value="bKash">bKash</option>
+                <option value="bKash">Bkash</option>
                 <option value="Nagad">Nagad</option>
                 <option value="Rocket">Rocket</option>
-                <option value="Bank">Bank</option>
+                <option value="Bank">Bank Transfer</option>
               </select>
             </div>
             <div>
@@ -258,6 +304,7 @@ const MyPayments = () => {
                 value={formData.transactionId}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                placeholder="Enter transaction ID"
               />
             </div>
             <div className="md:col-span-2">
@@ -271,8 +318,67 @@ const MyPayments = () => {
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#082f72]"
                 required
+                placeholder="Your mobile number or account number"
               />
             </div>
+
+            {/* Payment Method Details */}
+            {formData.paymentMethod && (
+              <div className="md:col-span-2 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 className="font-semibold text-blue-800 mb-2">
+                  {paymentMethods[formData.paymentMethod].name} Payment Details:
+                </h3>
+
+                {formData.paymentMethod !== "Bank" ? (
+                  <div className="text-sm text-gray-700">
+                    <p className="mb-1">
+                      <span className="font-medium">Number: </span>
+                      {paymentMethods[formData.paymentMethod].number}
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-medium">Type: </span>
+                      {paymentMethods[formData.paymentMethod].type}
+                    </p>
+                    <p className="mb-1 text-blue-600">
+                      <span className="font-medium">Instructions: </span>
+                      {paymentMethods[formData.paymentMethod].instructions}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-700">
+                    <p className="mb-1">
+                      <span className="font-medium">Account Name: </span>
+                      {paymentMethods[formData.paymentMethod].accountName}
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-medium">Bank Name: </span>
+                      {paymentMethods[formData.paymentMethod].bankName}
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-medium">Branch: </span>
+                      {paymentMethods[formData.paymentMethod].branch}
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-medium">Account Number: </span>
+                      {paymentMethods[formData.paymentMethod].accountNumber}
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-medium">Routing Number: </span>
+                      {paymentMethods[formData.paymentMethod].routingNumber}
+                    </p>
+                    <p className="mb-1">
+                      <span className="font-medium">SWIFT Code: </span>
+                      {paymentMethods[formData.paymentMethod].swiftCode}
+                    </p>
+                    <p className="mb-1 text-blue-600">
+                      <span className="font-medium">Instructions: </span>
+                      {paymentMethods[formData.paymentMethod].instructions}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="md:col-span-2">
               <button
                 type="submit"
