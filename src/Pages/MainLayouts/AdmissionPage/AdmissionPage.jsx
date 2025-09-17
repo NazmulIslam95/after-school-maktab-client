@@ -28,6 +28,10 @@ const AdmissionPage = () => {
     age: "",
     gender: "",
     referralCode: "",
+    selectedDays: [],
+    selectedHour: "12",
+    selectedMinute: "00",
+    ampm: "PM",
   });
 
   const [setDiscountedPrice] = useState(state.price);
@@ -38,6 +42,25 @@ const AdmissionPage = () => {
   // Sibling feature state
   const [hasSiblings, setHasSiblings] = useState(false);
   const [siblings, setSiblings] = useState([{ name: "", email: "" }]);
+
+  // Days of the week
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  // Hours and minutes options
+  const hours = Array.from({ length: 12 }, (_, i) =>
+    (i + 1).toString().padStart(2, "0")
+  );
+  const minutes = Array.from({ length: 12 }, (_, i) =>
+    (i * 5).toString().padStart(2, "0")
+  );
 
   // Redirect to login if no user
   useEffect(() => {
@@ -60,6 +83,10 @@ const AdmissionPage = () => {
         age: currentUser.age || "",
         gender: currentUser.gender || "",
         referralCode: "",
+        selectedDays: [],
+        selectedHour: "12",
+        selectedMinute: "00",
+        ampm: "PM",
       });
     } else if (user) {
       setFormData((prev) => ({
@@ -76,6 +103,32 @@ const AdmissionPage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  // Handle day selection
+  const handleDaySelection = (day) => {
+    if (formData.selectedDays.includes(day)) {
+      // Remove day if already selected
+      setFormData((prev) => ({
+        ...prev,
+        selectedDays: prev.selectedDays.filter((d) => d !== day),
+      }));
+    } else {
+      // Add day if not selected and within the limit
+      if (formData.selectedDays.length < parseInt(state.days)) {
+        setFormData((prev) => ({
+          ...prev,
+          selectedDays: [...prev.selectedDays, day],
+        }));
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "Day Limit Exceeded",
+          text: `You can only select ${state.days} days. Please deselect a day first.`,
+          confirmButtonColor: "#082f72",
+        });
+      }
+    }
   };
 
   // Sibling functions
@@ -169,6 +222,17 @@ const AdmissionPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate day selection
+    if (formData.selectedDays.length !== parseInt(state.days)) {
+      Swal.fire({
+        icon: "error",
+        title: "Day Selection Error",
+        text: `Please select exactly ${state.days} days for your classes.`,
+        confirmButtonColor: "#082f72",
+      });
+      return;
+    }
+
     const purchaseData = {
       courseId: state.courseId,
       courseName: state.courseName,
@@ -177,6 +241,7 @@ const AdmissionPage = () => {
       originalPrice: originalPrice,
       duration: state.duration,
       days: state.days,
+      time: `${formData.selectedHour}:${formData.selectedMinute} ${formData.ampm}`,
       confirmed: false,
       referralCode: isCodeValid ? formData.referralCode : null,
       discountApplied: isCodeValid || hasSiblings,
@@ -312,7 +377,7 @@ const AdmissionPage = () => {
                     </p>
                   </div>
                   <div className="bg-white p-3 rounded-lg shadow-sm">
-                    <p className="text-sm text-gray-500">Days</p>
+                    <p className="text-sm text-gray-500">Days per week</p>
                     <p className="font-semibold text-gray-800">{state.days}</p>
                   </div>
                 </>
@@ -437,8 +502,147 @@ const AdmissionPage = () => {
                   />
                 </div>
 
+                {/* Present Address */}
+                <div className="space-y-1 md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Present Address
+                  </label>
+                  <textarea
+                    name="presentAddress"
+                    value={formData.presentAddress}
+                    onChange={handleChange}
+                    required
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  ></textarea>
+                </div>
+
+                {/* Permanent Address */}
+                <div className="space-y-1 md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Permanent Address
+                  </label>
+                  <textarea
+                    name="permanentAddress"
+                    value={formData.permanentAddress}
+                    onChange={handleChange}
+                    required
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  ></textarea>
+                </div>
+              </div>
+
+              {/* Class Schedule Section */}
+              <div className="border-t pt-6 mt-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  Class Schedule
+                </h3>
+
+                {/* Day Selection */}
+                <div className="space-y-3 mb-6">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Which days of the week would you like to attend classes? *
+                    <span className="text-gray-500 ml-2">
+                      (Select {state.days} days)
+                    </span>
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                    {daysOfWeek.map((day) => (
+                      <button
+                        type="button"
+                        key={day}
+                        onClick={() => handleDaySelection(day)}
+                        className={`p-3 border rounded-lg text-center transition-colors ${
+                          formData.selectedDays.includes(day)
+                            ? "bg-blue-100 border-blue-500 text-blue-700 font-medium"
+                            : "border-gray-300 hover:border-blue-300"
+                        } ${
+                          formData.selectedDays.length >=
+                            parseInt(state.days) &&
+                          !formData.selectedDays.includes(day)
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer"
+                        }`}
+                        disabled={
+                          formData.selectedDays.length >=
+                            parseInt(state.days) &&
+                          !formData.selectedDays.includes(day)
+                        }
+                      >
+                        {day}
+                      </button>
+                    ))}
+                  </div>
+                  {formData.selectedDays.length > 0 && (
+                    <p className="text-sm text-gray-600">
+                      Selected days: {formData.selectedDays.join(", ")}
+                    </p>
+                  )}
+                </div>
+
+                {/* Time Selection */}
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Preferred Class Time{" "}
+                    <span className="text-red-500">
+                      (Submit Bangladeshi Time) *
+                    </span>
+                  </label>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <select
+                      name="selectedHour"
+                      value={formData.selectedHour}
+                      onChange={handleChange}
+                      required
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      {hours.map((hour) => (
+                        <option key={hour} value={hour}>
+                          {hour}
+                        </option>
+                      ))}
+                    </select>
+                    <span className="text-gray-700">:</span>
+                    <select
+                      name="selectedMinute"
+                      value={formData.selectedMinute}
+                      onChange={handleChange}
+                      required
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      {minutes.map((minute) => (
+                        <option key={minute} value={minute}>
+                          {minute}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      name="ampm"
+                      value={formData.ampm}
+                      onChange={handleChange}
+                      required
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Selected time: {formData.selectedHour}:
+                    {formData.selectedMinute} {formData.ampm}
+                  </p>
+                </div>
+              </div>
+
+              {/* Discounts Section */}
+              <div className="border-t pt-6 mt-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4">
+                  Discount Options
+                </h3>
+
                 {/* Sibling Enrollment Section */}
-                <div className="space-y-1">
+                <div className="space-y-4 mb-6">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
                     <input
                       type="checkbox"
@@ -446,7 +650,7 @@ const AdmissionPage = () => {
                       onChange={() => setHasSiblings(!hasSiblings)}
                       className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                     />
-                    Enroll with siblings (Get 20% discount Everyone)
+                    Enroll with siblings (Get 20% discount for each sibling)
                   </label>
 
                   {hasSiblings && (
@@ -554,38 +758,8 @@ const AdmissionPage = () => {
                 </div>
               </div>
 
-              {/* Present Address */}
-              <div className="space-y-1">
-                <label className="block text-sm font-medium text-gray-700">
-                  Present Address
-                </label>
-                <textarea
-                  name="presentAddress"
-                  value={formData.presentAddress}
-                  onChange={handleChange}
-                  required
-                  rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                ></textarea>
-              </div>
-
-              {/* Permanent Address */}
-              <div className="space-y-1">
-                <label className="block text-sm font-medium text-gray-700">
-                  Permanent Address
-                </label>
-                <textarea
-                  name="permanentAddress"
-                  value={formData.permanentAddress}
-                  onChange={handleChange}
-                  required
-                  rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                ></textarea>
-              </div>
-
               {/* Terms and Conditions Section */}
-              <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+              <div className="border-t pt-6 mt-6">
                 <h4 className="text-lg font-bold text-gray-800 mb-3">
                   Terms and Conditions
                 </h4>
@@ -612,27 +786,30 @@ const AdmissionPage = () => {
                     </li>
                   </ol>
                 </div>
-              </div>
 
-              {/* Terms Agreement Checkbox */}
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="terms"
-                    name="terms"
-                    type="checkbox"
-                    required
-                    className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label htmlFor="terms" className="font-medium text-gray-700">
-                    I have read and agree to the terms and conditions
-                  </label>
-                  <p className="text-gray-500">
-                    By submitting this form, you agree to abide by all the
-                    policies mentioned above.
-                  </p>
+                {/* Terms Agreement Checkbox */}
+                <div className="flex items-start mt-4">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      required
+                      className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label
+                      htmlFor="terms"
+                      className="font-medium text-gray-700"
+                    >
+                      I have read and agree to the terms and conditions
+                    </label>
+                    <p className="text-gray-500">
+                      By submitting this form, you agree to abide by all the
+                      policies mentioned above.
+                    </p>
+                  </div>
                 </div>
               </div>
 

@@ -165,8 +165,16 @@ const MyCourses = () => {
                   {course.duration || "N/A"}
                 </p>
                 <p>
-                  <span className="font-medium text-[#082f72]">Days:</span>{" "}
+                  <span className="font-medium text-[#082f72]">Days In a Weak:</span>{" "}
                   {course.days || "N/A"}
+                </p>
+                <p>
+                  <span className="font-semibold text-[#082f72]">
+                    Selected Days:
+                  </span>{" "}
+                  {Array.isArray(course.selectedDays)
+                    ? course.selectedDays.join(", ")
+                    : course.selectedDays || "N/A"}
                 </p>
                 <p>
                   <span className="font-medium text-[#082f72]">Price:</span> ৳

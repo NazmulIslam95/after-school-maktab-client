@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
-import { MdPerson } from "react-icons/md";
+import { MdPerson, MdSearch } from "react-icons/md";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import useAllPurchase from "../../../CustomHooks/useAllPurchase";
@@ -19,6 +19,7 @@ const Orders = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(7); // August (0-based: 7)
   const [currentYear, setCurrentYear] = useState(2025); // Set to 2025 to match data
+  const [searchTerm, setSearchTerm] = useState(""); // Search term state
 
   const notifySuccess = () => toast.success("Course Purchase Is Confirmed!");
   const notifyError = () => toast.error("Failed to Confirm Course Purchase");
@@ -73,6 +74,29 @@ const Orders = () => {
     if (filter === "confirmed") return purchase.confirmed;
     if (filter === "denied") return purchase.denied;
     return true;
+  });
+
+  // Search function
+  const searchedPurchases = filteredPurchases.filter((purchase) => {
+    if (!searchTerm) return true;
+
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      purchase.studentName.toLowerCase().includes(searchLower) ||
+      purchase.studentEmail.toLowerCase().includes(searchLower) ||
+      purchase.courseName.toLowerCase().includes(searchLower) ||
+      (purchase.confirmed && "confirmed".includes(searchLower)) ||
+      (purchase.denied && "denied".includes(searchLower)) ||
+      (!purchase.confirmed &&
+        !purchase.denied &&
+        "pending".includes(searchLower)) ||
+      (purchase.siblings &&
+        purchase.siblings.some(
+          (sibling) =>
+            sibling.name.toLowerCase().includes(searchLower) ||
+            sibling.email.toLowerCase().includes(searchLower)
+        ))
+    );
   });
 
   // Calendar logic
@@ -267,7 +291,23 @@ const Orders = () => {
         </div>
       ) : (
         <>
-          <div className="max-w-6xl mx-auto mt-6 flex justify-end">
+          {/* Search and Filter Section */}
+          <div className="max-w-6xl mx-auto mt-6 flex flex-col md:flex-row gap-4 justify-between items-center px-4">
+            {/* Search Bar */}
+            <div className="relative w-full md:w-1/2">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <MdSearch className="text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search by name, email, course, or status..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#082f72] bg-white shadow-sm"
+              />
+            </div>
+
+            {/* Filter Dropdown */}
             <div className="relative inline-block text-left">
               <label className="font-semibold text-[#082f72] mr-2">
                 Filter:
@@ -275,7 +315,7 @@ const Orders = () => {
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#082f72] bg-white shadow-sm"
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#082f72] bg-white shadow-sm"
               >
                 <option value="all">All</option>
                 <option value="pending">Pending</option>
@@ -284,14 +324,25 @@ const Orders = () => {
               </select>
             </div>
           </div>
+
+          {/* Results Count */}
+          <div className="max-w-6xl mx-auto mt-4 px-4">
+            <p className="text-sm text-gray-600">
+              Showing {searchedPurchases.length} of {purchases.length} orders
+              {searchTerm && ` for "${searchTerm}"`}
+            </p>
+          </div>
+
           <div className="max-w-6xl mx-auto my-8">
-            {filteredPurchases.length === 0 ? (
-              <div className="text-center text-gray-500 text-lg">
-                No orders found for this filter.
+            {searchedPurchases.length === 0 ? (
+              <div className="text-center text-gray-500 text-lg py-12">
+                {searchTerm
+                  ? `No orders found for "${searchTerm}"`
+                  : "No orders found for this filter."}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredPurchases.map((purchase) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+                {searchedPurchases.map((purchase) => (
                   <div
                     key={purchase._id}
                     className={`bg-white p-6 rounded-2xl shadow-lg ${
@@ -302,7 +353,7 @@ const Orders = () => {
                           : "bg-red-50"
                     } hover:shadow-xl transition-all duration-300`}
                   >
-                    <h3 className="font-bold text-xl text-gray-900 mb-3 flex items-center gap-1">
+                    <h3 className="font-bold text-xl text-gray-900 mb-3 flex items-center gap-1 capitalize">
                       <MdPerson /> {purchase.studentName}
                     </h3>
                     <div className="space-y-2 text-sm text-gray-700">
@@ -311,6 +362,12 @@ const Orders = () => {
                           Email:
                         </span>{" "}
                         {purchase.studentEmail}
+                      </p>
+                      <p>
+                        <span className="font-semibold text-[#082f72]">
+                          Whatsapp Number:
+                        </span>{" "}
+                        {purchase.whatsappNumber}
                       </p>
 
                       {/* Sibling Information */}
@@ -351,7 +408,7 @@ const Orders = () => {
                           Price:
                         </span>{" "}
                         <span className="text-green-600 font-bold">
-                          ${purchase.price}
+                          ${purchase.price} USD
                         </span>
                       </p>
                       <p>
@@ -362,12 +419,39 @@ const Orders = () => {
                       </p>
                       <p>
                         <span className="font-semibold text-[#082f72]">
-                          Days:
+                          How Many Days:
                         </span>{" "}
                         {purchase.days || "N/A"}
                       </p>
+                      <p>
+                        <span className="font-semibold text-[#082f72]">
+                          Class Time In BD:
+                        </span>{" "}
+                        {purchase.time || "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold text-[#082f72]">
+                          Selected Days:
+                        </span>{" "}
+                        {Array.isArray(purchase.selectedDays)
+                          ? purchase.selectedDays.join(", ")
+                          : purchase.selectedDays || "N/A"}
+                      </p>
 
-                      <div className="mt-3">
+                      <p>
+                        <span className="font-semibold text-[#082f72]">
+                          Present Address:
+                        </span>{" "}
+                        {purchase.presentAddress || "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold text-[#082f72]">
+                          Permanent Address:
+                        </span>{" "}
+                        {purchase.permanentAddress || "N/A"}
+                      </p>
+
+                      <div className="mt-3 flex gap-1">
                         <label className="font-semibold text-[#082f72] block mb-1">
                           Tutor:
                         </label>
