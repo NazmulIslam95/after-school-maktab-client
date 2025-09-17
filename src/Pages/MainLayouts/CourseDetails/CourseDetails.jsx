@@ -136,15 +136,15 @@ const CourseDetails = () => {
                     </div>
                   </div>
                   <p className="text-base sm:text-lg text-gray-800 font-semibold flex items-center justify-center sm:justify-start gap-2">
-                    <span className="text-blue-900"> Course Fee::</span>{" "}
-                    <span className="text-blue-900">{getSelectedPrice()}</span>
+                    <span className="text-blue-900"> Course Fee:</span>{" "}
+                    <span className="text-blue-900">{getSelectedPrice()} USD</span>
                   </p>
                 </>
               ) : (
                 <div className="mt-4 sm:mt-6">
                   <p className="text-base sm:text-lg font-semibold text-blue-900 flex items-center justify-center sm:justify-start gap-2">
                     <span className="text-blue-900"> Course Fee:</span> $
-                    {course.price}
+                    {course.price} USD
                   </p>
                 </div>
               )}

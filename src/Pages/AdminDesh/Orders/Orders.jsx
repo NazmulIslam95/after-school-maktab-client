@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DashboardBanner from "../../../Components/DashboardBanner/DashboardBanner";
-import { MdPerson, MdSearch } from "react-icons/md";
+import { MdPerson, MdSearch, MdEdit, MdAssignment } from "react-icons/md";
 import useAxiosSecure from "../../../CustomHooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import useAllPurchase from "../../../CustomHooks/useAllPurchase";
@@ -14,12 +14,18 @@ const Orders = () => {
   const [selectedTutors, setSelectedTutors] = useState({});
   const [filter, setFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); // 'student' or 'tutor'
+  const [modalType, setModalType] = useState(null);
   const [selectedPurchase, setSelectedPurchase] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [currentMonth, setCurrentMonth] = useState(7); // August (0-based: 7)
-  const [currentYear, setCurrentYear] = useState(2025); // Set to 2025 to match data
-  const [searchTerm, setSearchTerm] = useState(""); // Search term state
+  const [currentMonth, setCurrentMonth] = useState(7);
+  const [currentYear, setCurrentYear] = useState(2025);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Edit system states
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingPurchase, setEditingPurchase] = useState(null);
+  const [editFormData, setEditFormData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const notifySuccess = () => toast.success("Course Purchase Is Confirmed!");
   const notifyError = () => toast.error("Failed to Confirm Course Purchase");
@@ -109,7 +115,7 @@ const Orders = () => {
   const studentReviewQuestions = {
     q1: "১. শিক্ষক কি যথাসময়ে ক্লাসে উপস্থিত ছিলেন?",
     q2: "২. আজকের পাঠদান কেমন লেগেছে?",
-    q3: "৩. ক্লাস চলাকালে শিক্ষক শিক্ষার্থীর সাথে কেমন ব্যবহার করেছেন?",
+    q3: "৩. क्लास চলাকালে শিক্ষক শিক্ষার্থীর সাথে কেমন ব্যবহার করেছেন?",
   };
 
   const tutorReviewQuestions = {
@@ -121,83 +127,37 @@ const Orders = () => {
   // Get dates with reviews
   const getReviewDates = (purchase, type) => {
     const dates = new Set();
-    console.log(
-      `Processing ${type} reviews for purchase:`,
-      purchase._id,
-      purchase[type + "Review"]
-    );
-
     const reviews = purchase[type + "Review"] || [];
-    reviews.forEach((review, index) => {
+    reviews.forEach((review) => {
       try {
-        if (!review.createdAt) {
-          console.warn(
-            `Missing createdAt in ${type} review at index ${index}`,
-            review
-          );
-          return;
-        }
+        if (!review.createdAt) return;
         const dateStr = review.createdAt;
         const date = new Date(dateStr);
-        if (isNaN(date.getTime())) {
-          console.warn(
-            `Invalid date in ${type} review at index ${index}:`,
-            dateStr
-          );
-          return;
-        }
+        if (isNaN(date.getTime())) return;
         const utcDay = date.getUTCDate();
         const utcMonth = date.getUTCMonth();
         const utcYear = date.getUTCFullYear();
-        console.log(
-          `Review ${index} date: ${dateStr} -> UTC ${utcDay}/${utcMonth + 1}/${utcYear}`
-        );
         if (utcMonth === currentMonth && utcYear === currentYear) {
           dates.add(utcDay);
         }
       } catch (error) {
-        console.error(
-          `Error parsing ${type} review date at index ${index}:`,
-          error,
-          review
-        );
+        console.error(`Error parsing ${type} review date:`, error);
       }
     });
 
-    const result = Array.from(dates);
-    console.log(
-      `Review dates for ${type} in ${currentMonth + 1}/${currentYear}:`,
-      result
-    );
-    return result;
+    return Array.from(dates);
   };
 
   // Get reviews for a specific date
   const getReviewsForDate = (purchase, date, type) => {
     const reviews = [];
-    console.log(
-      `Fetching ${type} reviews for ${date}/${currentMonth + 1}/${currentYear}`
-    );
-
     const reviewArray = purchase[type + "Review"] || [];
-    reviewArray.forEach((review, index) => {
+    reviewArray.forEach((review) => {
       try {
-        if (!review.createdAt) {
-          console.warn(
-            `Missing createdAt in ${type} review at index ${index}`,
-            review
-          );
-          return;
-        }
+        if (!review.createdAt) return;
         const dateStr = review.createdAt;
         const reviewDate = new Date(dateStr);
-        if (isNaN(reviewDate.getTime())) {
-          console.warn(
-            `Invalid date in ${type} review at index ${index}:`,
-            dateStr
-          );
-          return;
-        }
+        if (isNaN(reviewDate.getTime())) return;
         const utcDay = reviewDate.getUTCDate();
         const utcMonth = reviewDate.getUTCMonth();
         const utcYear = reviewDate.getUTCFullYear();
@@ -207,24 +167,12 @@ const Orders = () => {
           utcYear === currentYear
         ) {
           reviews.push(review);
-        } else {
-          console.log(
-            `Review ${index} skipped for ${type}: ${dateStr} (UTC ${utcDay}/${utcMonth + 1}/${utcYear}) does not match ${date}/${currentMonth + 1}/${currentYear}`
-          );
         }
       } catch (error) {
-        console.error(
-          `Error parsing ${type} review date at index ${index}:`,
-          error,
-          review
-        );
+        console.error(`Error parsing ${type} review date:`, error);
       }
     });
 
-    console.log(
-      `Found ${reviews.length} ${type} reviews for ${date}/${currentMonth + 1}/${currentYear}:`,
-      reviews
-    );
     return reviews;
   };
 
@@ -237,7 +185,6 @@ const Orders = () => {
       setCurrentMonth(currentMonth - 1);
     }
     setSelectedDate(null);
-    console.log(`Navigated to previous month: ${currentMonth}/${currentYear}`);
   };
 
   const handleNextMonth = () => {
@@ -248,24 +195,16 @@ const Orders = () => {
       setCurrentMonth(currentMonth + 1);
     }
     setSelectedDate(null);
-    console.log(`Navigated to next month: ${currentMonth + 2}/${currentYear}`);
   };
 
   // Open modal for reviews
   const openReviewModal = (purchase, type) => {
-    console.log(
-      `Opening modal for ${type} reviews, purchase ID: ${purchase._id}`,
-      {
-        studentReview: purchase.studentReview,
-        tutorReview: purchase.tutorReview,
-      }
-    );
     setSelectedPurchase(purchase);
     setModalType(type);
     setIsModalOpen(true);
     setSelectedDate(null);
-    setCurrentMonth(7); // August 2025 (0-based)
-    setCurrentYear(2025); // Match data year
+    setCurrentMonth(7);
+    setCurrentYear(2025);
   };
 
   // Close modal
@@ -274,7 +213,149 @@ const Orders = () => {
     setModalType(null);
     setSelectedPurchase(null);
     setSelectedDate(null);
-    console.log("Modal closed");
+  };
+
+  // Open edit modal and initialize form data
+  const handleEdit = (purchase) => {
+    setEditingPurchase(purchase);
+    setEditFormData({
+      studentName: purchase.studentName || "",
+      studentEmail: purchase.studentEmail || "",
+      whatsappNumber: purchase.whatsappNumber || "",
+      fatherName: purchase.fatherName || "",
+      presentAddress: purchase.presentAddress || "",
+      permanentAddress: purchase.permanentAddress || "",
+      nationality: purchase.nationality || "",
+      age: purchase.age || "",
+      gender: purchase.gender || "",
+      courseName: purchase.courseName || "",
+      type: purchase.type || "",
+      price: purchase.price || 0,
+      originalPrice: purchase.originalPrice || 0,
+      duration: purchase.duration || "",
+      days: purchase.days || "",
+      time: purchase.time || "",
+      selectedDays: purchase.selectedDays || [],
+      selectedHour: purchase.selectedHour || "",
+      selectedMinute: purchase.selectedMinute || "",
+      ampm: purchase.ampm || "AM",
+      referralCode: purchase.referralCode || "",
+      discountApplied: purchase.discountApplied || false,
+      discountType: purchase.discountType || null,
+      discountAmount: purchase.discountAmount || 0,
+      siblings: purchase.siblings || [],
+      assignedTutorId: purchase.assignedTutorId || ""
+    });
+    setIsEditModalOpen(true);
+  };
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditFormData({
+      ...editFormData,
+      [name]: type === "checkbox" ? checked : value
+    });
+  };
+
+  // Handle sibling input changes
+  const handleSiblingChange = (index, field, value) => {
+    const updatedSiblings = [...editFormData.siblings];
+    updatedSiblings[index] = {
+      ...updatedSiblings[index],
+      [field]: value
+    };
+    setEditFormData({
+      ...editFormData,
+      siblings: updatedSiblings
+    });
+  };
+
+  // Add new sibling field
+  const addSibling = () => {
+    setEditFormData({
+      ...editFormData,
+      siblings: [...editFormData.siblings, { name: "", email: "" }]
+    });
+  };
+
+  // Remove sibling field
+  const removeSibling = (index) => {
+    const updatedSiblings = [...editFormData.siblings];
+    updatedSiblings.splice(index, 1);
+    setEditFormData({
+      ...editFormData,
+      siblings: updatedSiblings
+    });
+  };
+
+  // Handle day selection
+  const handleDaySelection = (day) => {
+    const updatedDays = [...editFormData.selectedDays];
+    const dayIndex = updatedDays.indexOf(day);
+    
+    if (dayIndex > -1) {
+      updatedDays.splice(dayIndex, 1);
+    } else {
+      updatedDays.push(day);
+    }
+    
+    setEditFormData({
+      ...editFormData,
+      selectedDays: updatedDays
+    });
+  };
+
+  // Submit updated purchase data
+  const handleUpdatePurchase = async () => {
+    setIsSubmitting(true);
+    try {
+      const res = await axiosSecure.patch(
+        `/purchase/${editingPurchase._id}`,
+        editFormData
+      );
+      
+      if (res.data.success) {
+        toast.success(res.data.message || "Purchase updated successfully!");
+        refetch();
+        setIsEditModalOpen(false);
+      } else {
+        toast.error(res.data.message || "Failed to update purchase");
+      }
+    } catch (error) {
+      console.error("Error updating purchase:", error);
+      toast.error(error.response?.data?.message || "Error updating purchase");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Assign tutor directly from edit modal
+  const handleAssignTutor = async () => {
+    if (!editFormData.assignedTutorId) {
+      toast.error("Please select a tutor first");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await axiosSecure.patch(`/purchases/confirm/${editingPurchase._id}`, {
+        tutorId: editFormData.assignedTutorId
+      });
+      
+      if (res.data.success) {
+        toast.success("Tutor assigned successfully!");
+        refetch();
+        setIsEditModalOpen(false);
+      } else {
+        toast.error(res.data.message || "Failed to assign tutor");
+      }
+    } catch (error) {
+      console.error("Error assigning tutor:", error);
+      toast.error("Error assigning tutor");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -353,9 +434,20 @@ const Orders = () => {
                           : "bg-red-50"
                     } hover:shadow-xl transition-all duration-300`}
                   >
-                    <h3 className="font-bold text-xl text-gray-900 mb-3 flex items-center gap-1 capitalize">
-                      <MdPerson /> {purchase.studentName}
-                    </h3>
+                    {/* Edit Button */}
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-bold text-xl text-gray-900 flex items-center gap-1 capitalize">
+                        <MdPerson /> {purchase.studentName}
+                      </h3>
+                      <button
+                        onClick={() => handleEdit(purchase)}
+                        className="p-1.5 text-[#082f72] hover:bg-[#082f72] hover:text-white rounded-full transition"
+                        title="Edit purchase"
+                      >
+                        <MdEdit size={18} />
+                      </button>
+                    </div>
+
                     <div className="space-y-2 text-sm text-gray-700">
                       <p>
                         <span className="font-semibold text-[#082f72]">
@@ -540,6 +632,498 @@ const Orders = () => {
             )}
           </div>
 
+          {/* Edit Modal */}
+          {isEditModalOpen && editingPurchase && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+              <div className="bg-white p-6 rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <h4 className="font-semibold text-[#082f72] mb-4 text-lg border-b pb-2">
+                  Edit Purchase: {editingPurchase.studentName}
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  {/* Student Information */}
+                  <div className="md:col-span-2">
+                    <h5 className="font-medium text-[#082f72] mb-2 border-b pb-1">
+                      Student Information
+                    </h5>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Student Name
+                    </label>
+                    <input
+                      type="text"
+                      name="studentName"
+                      value={editFormData.studentName}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Student Email
+                    </label>
+                    <input
+                      type="email"
+                      name="studentEmail"
+                      value={editFormData.studentEmail}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      WhatsApp Number
+                    </label>
+                    <input
+                      type="text"
+                      name="whatsappNumber"
+                      value={editFormData.whatsappNumber}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Father's Name
+                    </label>
+                    <input
+                      type="text"
+                      name="fatherName"
+                      value={editFormData.fatherName}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Present Address
+                    </label>
+                    <input
+                      type="text"
+                      name="presentAddress"
+                      value={editFormData.presentAddress}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Permanent Address
+                    </label>
+                    <input
+                      type="text"
+                      name="permanentAddress"
+                      value={editFormData.permanentAddress}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Nationality
+                    </label>
+                    <input
+                      type="text"
+                      name="nationality"
+                      value={editFormData.nationality}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Age
+                    </label>
+                    <input
+                      type="text"
+                      name="age"
+                      value={editFormData.age}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Gender
+                    </label>
+                    <select
+                      name="gender"
+                      value={editFormData.gender}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  {/* Tutor Assignment Section */}
+                  <div className="md:col-span-2 mt-4">
+                    <h5 className="font-medium text-[#082f72] mb-2 border-b pb-1 flex items-center gap-2">
+                      <MdAssignment className="text-[#082f72]" /> Tutor Assignment
+                    </h5>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Assign Tutor
+                    </label>
+                    <select
+                      name="assignedTutorId"
+                      value={editFormData.assignedTutorId}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    >
+                      <option value="">Select Tutor</option>
+                      {tutors.map((tutor) => (
+                        <option key={tutor._id} value={tutor._id}>
+                          {tutor.name} - {tutor.expertise || "General"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Course Information */}
+                  <div className="md:col-span-2 mt-4">
+                    <h5 className="font-medium text-[#082f72] mb-2 border-b pb-1">
+                      Course Information
+                    </h5>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Course Name
+                    </label>
+                    <input
+                      type="text"
+                      name="courseName"
+                      value={editFormData.courseName}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Type
+                    </label>
+                    <select
+                      name="type"
+                      value={editFormData.type}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    >
+                      <option value="1-to-1">1-to-1</option>
+                      <option value="group">Group</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Price (USD)
+                    </label>
+                    <input
+                      type="number"
+                      name="price"
+                      value={editFormData.price}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Original Price (USD)
+                    </label>
+                    <input
+                      type="number"
+                      name="originalPrice"
+                      value={editFormData.originalPrice}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Duration
+                    </label>
+                    <input
+                      type="text"
+                      name="duration"
+                      value={editFormData.duration}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Days
+                    </label>
+                    <input
+                      type="text"
+                      name="days"
+                      value={editFormData.days}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Class Time
+                    </label>
+                    <input
+                      type="text"
+                      name="time"
+                      value={editFormData.time}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  {/* Time Selection */}
+                  <div className="md:col-span-2 grid grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Hour
+                      </label>
+                      <select
+                        name="selectedHour"
+                        value={editFormData.selectedHour}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                      >
+                        {Array.from({ length: 12 }, (_, i) => i + 1).map((hour) => (
+                          <option key={hour} value={hour}>
+                            {hour}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Minute
+                      </label>
+                      <select
+                        name="selectedMinute"
+                        value={editFormData.selectedMinute}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                      >
+                        <option value="00">00</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        AM/PM
+                      </label>
+                      <select
+                        name="ampm"
+                        value={editFormData.ampm}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                      >
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Day Selection */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Selected Days
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => (
+                        <button
+                          key={day}
+                          type="button"
+                          onClick={() => handleDaySelection(day)}
+                          className={`px-3 py-1 rounded-full text-sm ${
+                            editFormData.selectedDays.includes(day)
+                              ? "bg-[#082f72] text-white"
+                              : "bg-gray-200 text-gray-700"
+                          }`}
+                        >
+                          {day}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Discount Information */}
+                  <div className="md:col-span-2 mt-4">
+                    <h5 className="font-medium text-[#082f72] mb-2 border-b pb-1">
+                      Discount Information
+                    </h5>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Referral Code
+                    </label>
+                    <input
+                      type="text"
+                      name="referralCode"
+                      value={editFormData.referralCode}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="discountApplied"
+                      checked={editFormData.discountApplied}
+                      onChange={handleInputChange}
+                      className="mr-2 h-4 w-4 text-[#082f72] focus:ring-[#082f72] border-gray-300 rounded"
+                    />
+                    <label className="block text-sm font-medium text-gray-700">
+                      Discount Applied
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Discount Type
+                    </label>
+                    <input
+                      type="text"
+                      name="discountType"
+                      value={editFormData.discountType || ""}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Discount Amount
+                    </label>
+                    <input
+                      type="number"
+                      name="discountAmount"
+                      value={editFormData.discountAmount}
+                      onChange={handleInputChange}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                    />
+                  </div>
+
+                  {/* Siblings Section */}
+                  <div className="md:col-span-2 mt-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <h5 className="font-medium text-[#082f72] border-b pb-1">
+                        Siblings
+                      </h5>
+                      <button
+                        type="button"
+                        onClick={addSibling}
+                        className="px-3 py-1 bg-green-600 text-white text-sm rounded-lg"
+                      >
+                        Add Sibling
+                      </button>
+                    </div>
+
+                    {editFormData.siblings.map((sibling, index) => (
+                      <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 p-3 bg-gray-50 rounded-lg">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Sibling Name
+                          </label>
+                          <input
+                            type="text"
+                            value={sibling.name || ""}
+                            onChange={(e) => handleSiblingChange(index, "name", e.target.value)}
+                            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Sibling Email
+                          </label>
+                          <div className="flex">
+                            <input
+                              type="email"
+                              value={sibling.email || ""}
+                              onChange={(e) => handleSiblingChange(index, "email", e.target.value)}
+                              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeSibling(index)}
+                              className="ml-2 px-3 py-2 bg-red-600 text-white text-sm rounded-lg"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex justify-between gap-3 mt-6 pt-4 border-t">
+                  <div>
+                    <button
+                      onClick={handleAssignTutor}
+                      disabled={isSubmitting || !editFormData.assignedTutorId}
+                      className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg flex items-center disabled:bg-green-400 disabled:cursor-not-allowed"
+                    >
+                      <MdAssignment className="mr-2" />
+                      Assign Tutor
+                    </button>
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setIsEditModalOpen(false)}
+                      className="px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg"
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleUpdatePurchase}
+                      className="px-4 py-2 bg-[#082f72] text-white text-sm font-medium rounded-lg flex items-center"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Saving...
+                        </>
+                      ) : (
+                        "Save Changes"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Review Modal */}
           {isModalOpen && selectedPurchase && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -602,9 +1186,6 @@ const Orders = () => {
                           key={day}
                           onClick={() => {
                             setSelectedDate(day);
-                            console.log(
-                              `Clicked date: ${day}/${currentMonth + 1}/${currentYear}`
-                            );
                           }}
                           className={`h-10 rounded-full text-sm ${
                             reviewDates.includes(day)

@@ -120,7 +120,7 @@ const MyCourses = () => {
           You haven't purchased any course yet.
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ">
           {purchases.map((course) => {
             const assignedTutor = course.assignedTutorId
               ? tutorsMap[course.assignedTutorId] ||
@@ -165,7 +165,9 @@ const MyCourses = () => {
                   {course.duration || "N/A"}
                 </p>
                 <p>
-                  <span className="font-medium text-[#082f72]">Days In a Weak:</span>{" "}
+                  <span className="font-medium text-[#082f72]">
+                    Days In a Weak:
+                  </span>{" "}
                   {course.days || "N/A"}
                 </p>
                 <p>
@@ -177,8 +179,8 @@ const MyCourses = () => {
                     : course.selectedDays || "N/A"}
                 </p>
                 <p>
-                  <span className="font-medium text-[#082f72]">Price:</span> ৳
-                  {course.price || "0"}
+                  <span className="font-medium text-[#082f72]">Price:</span> $
+                  {course.price || "0"} USD
                 </p>
 
                 {course.confirmed && assignedTutor?.zoomLink ? (

@@ -365,7 +365,7 @@ const AdmissionPage = () => {
                       {siblings.filter((s) => s.name && s.email).length}{" "}
                       sibling(s) × 20% discount
                     </span>
-                  )}
+                  )} USD
                 </p>
               </div>
               {state.type === "1-to-1" && (
