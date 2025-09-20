@@ -37,6 +37,7 @@ import PrivateRoute from "./PrivateRoute";
 import AddRecentStudent from "../Pages/AdminDesh/AddRecentStudent/AddRecentStudent";
 import AllRecentStudents from "../Pages/AdminDesh/AllRecentStudents/AllRecentStudents";
 import Terms from "../Pages/MainLayouts/Terms/Terms";
+import StudentDetails from "../Pages/AdminDesh/StudentDetails/StudentDetails";
 
 export const router = createBrowserRouter([
   {
@@ -80,7 +81,8 @@ export const router = createBrowserRouter([
         element: <CourseDetails />,
         loader: ({ params }) =>
           fetch(
-            `https://after-school-maktab-server.vercel.app/courses/${params.id}`
+            // `https://after-school-maktab-server.vercel.app/courses/${params.id}`
+            `http://localhost:5000/courses/${params.id}`
           ),
       },
       {
@@ -88,7 +90,8 @@ export const router = createBrowserRouter([
         element: <TutorDetails />,
         loader: ({ params }) =>
           fetch(
-            `https://after-school-maktab-server.vercel.app/tutor/${params.id}`
+            // `https://after-school-maktab-server.vercel.app/tutor/${params.id}`
+            `http://localhost:5000/tutor/${params.id}`
           ),
       },
       {
@@ -177,6 +180,15 @@ export const router = createBrowserRouter([
       {
         path: "allRecentStudents",
         element: <AllRecentStudents />,
+      },
+      {
+        path: "users/:email",
+        element: <StudentDetails />,
+        loader: ({ params }) =>
+          fetch(
+            // `https://after-school-maktab-server.vercel.app/user/${params.email}`
+            `http://localhost:5000/users/${params.email}`
+          ),
       },
     ],
   },

@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import useAllPurchase from "../../../CustomHooks/useAllPurchase";
 import useAllTutors from "../../../CustomHooks/useAllTutors";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import { FaDeleteLeft } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa";
 
 const Orders = () => {
   const axiosSecure = useAxiosSecure();
@@ -115,7 +118,7 @@ const Orders = () => {
   const studentReviewQuestions = {
     q1: "১. শিক্ষক কি যথাসময়ে ক্লাসে উপস্থিত ছিলেন?",
     q2: "২. আজকের পাঠদান কেমন লেগেছে?",
-    q3: "৩. क्लास চলাকালে শিক্ষক শিক্ষার্থীর সাথে কেমন ব্যবহার করেছেন?",
+    q3: "৩. क्लাস চলাকালে শিক্ষক শিক্ষার্থীর সাথে কেমন ব্যবহার করেছেন?",
   };
 
   const tutorReviewQuestions = {
@@ -215,6 +218,19 @@ const Orders = () => {
     setSelectedDate(null);
   };
 
+  // Format time for display
+  const formatTimeForDisplay = (purchase) => {
+    if (purchase.time) {
+      return purchase.time;
+    }
+
+    if (purchase.selectedHour && purchase.selectedMinute && purchase.ampm) {
+      return `${purchase.selectedHour}:${purchase.selectedMinute} ${purchase.ampm}`;
+    }
+
+    return "N/A";
+  };
+
   // Open edit modal and initialize form data
   const handleEdit = (purchase) => {
     setEditingPurchase(purchase);
@@ -236,15 +252,15 @@ const Orders = () => {
       days: purchase.days || "",
       time: purchase.time || "",
       selectedDays: purchase.selectedDays || [],
-      selectedHour: purchase.selectedHour || "",
-      selectedMinute: purchase.selectedMinute || "",
+      selectedHour: purchase.selectedHour || "7",
+      selectedMinute: purchase.selectedMinute || "00",
       ampm: purchase.ampm || "AM",
       referralCode: purchase.referralCode || "",
       discountApplied: purchase.discountApplied || false,
       discountType: purchase.discountType || null,
       discountAmount: purchase.discountAmount || 0,
       siblings: purchase.siblings || [],
-      assignedTutorId: purchase.assignedTutorId || ""
+      assignedTutorId: purchase.assignedTutorId || "",
     });
     setIsEditModalOpen(true);
   };
@@ -254,7 +270,7 @@ const Orders = () => {
     const { name, value, type, checked } = e.target;
     setEditFormData({
       ...editFormData,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -263,11 +279,11 @@ const Orders = () => {
     const updatedSiblings = [...editFormData.siblings];
     updatedSiblings[index] = {
       ...updatedSiblings[index],
-      [field]: value
+      [field]: value,
     };
     setEditFormData({
       ...editFormData,
-      siblings: updatedSiblings
+      siblings: updatedSiblings,
     });
   };
 
@@ -275,7 +291,7 @@ const Orders = () => {
   const addSibling = () => {
     setEditFormData({
       ...editFormData,
-      siblings: [...editFormData.siblings, { name: "", email: "" }]
+      siblings: [...editFormData.siblings, { name: "", email: "" }],
     });
   };
 
@@ -285,7 +301,7 @@ const Orders = () => {
     updatedSiblings.splice(index, 1);
     setEditFormData({
       ...editFormData,
-      siblings: updatedSiblings
+      siblings: updatedSiblings,
     });
   };
 
@@ -293,16 +309,16 @@ const Orders = () => {
   const handleDaySelection = (day) => {
     const updatedDays = [...editFormData.selectedDays];
     const dayIndex = updatedDays.indexOf(day);
-    
+
     if (dayIndex > -1) {
       updatedDays.splice(dayIndex, 1);
     } else {
       updatedDays.push(day);
     }
-    
+
     setEditFormData({
       ...editFormData,
-      selectedDays: updatedDays
+      selectedDays: updatedDays,
     });
   };
 
@@ -310,11 +326,17 @@ const Orders = () => {
   const handleUpdatePurchase = async () => {
     setIsSubmitting(true);
     try {
+      // Format the time before sending
+      const formattedData = {
+        ...editFormData,
+        time: `${editFormData.selectedHour}:${editFormData.selectedMinute} ${editFormData.ampm}`,
+      };
+
       const res = await axiosSecure.patch(
         `/purchase/${editingPurchase._id}`,
-        editFormData
+        formattedData
       );
-      
+
       if (res.data.success) {
         toast.success(res.data.message || "Purchase updated successfully!");
         refetch();
@@ -339,10 +361,13 @@ const Orders = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await axiosSecure.patch(`/purchases/confirm/${editingPurchase._id}`, {
-        tutorId: editFormData.assignedTutorId
-      });
-      
+      const res = await axiosSecure.patch(
+        `/purchases/confirm/${editingPurchase._id}`,
+        {
+          tutorId: editFormData.assignedTutorId,
+        }
+      );
+
       if (res.data.success) {
         toast.success("Tutor assigned successfully!");
         refetch();
@@ -356,6 +381,34 @@ const Orders = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await axiosSecure.delete(`/purchase/delete/${id}`);
+          if (res.data.success === true) {
+            console.log(res);
+            Swal.fire("Deleted!", "The order has been deleted.", "success");
+            refetch();
+          } else {
+            Swal.fire("Failed!", "Failed to delete the order.", "error");
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire("Error!", "Something went wrong.", "error");
+        }
+      }
+    });
   };
 
   return (
@@ -436,31 +489,45 @@ const Orders = () => {
                   >
                     {/* Edit Button */}
                     <div className="flex justify-between items-start mb-3">
-                      <h3 className="font-bold text-xl text-gray-900 flex items-center gap-1 capitalize">
-                        <MdPerson /> {purchase.studentName}
-                      </h3>
-                      <button
-                        onClick={() => handleEdit(purchase)}
-                        className="p-1.5 text-[#082f72] hover:bg-[#082f72] hover:text-white rounded-full transition"
-                        title="Edit purchase"
-                      >
-                        <MdEdit size={18} />
+                      <button>
+                        <Link
+                          to={`/admin/users/${purchase.studentEmail}`}
+                          className="font-bold text-xl text-gray-900 flex items-center gap-1 capitalize"
+                        >
+                          <MdPerson /> {purchase.studentName}
+                        </Link>
                       </button>
+                      <div>
+                        <button
+                          onClick={() => handleEdit(purchase)}
+                          className="p-1.5 text-[#082f72] hover:bg-[#082f72] hover:text-white rounded-full transition"
+                          title="Edit purchase"
+                        >
+                          <MdEdit size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(purchase._id)}
+                          className="p-1.5 text-red-500 hover:bg-red-500 hover:text-white rounded-full transition"
+                          title="Delete purchase"
+                        >
+                          <FaTrash size={18} />
+                        </button>
+                      </div>
                     </div>
 
                     <div className="space-y-2 text-sm text-gray-700">
-                      <p>
+                      {/* <p>
                         <span className="font-semibold text-[#082f72]">
                           Email:
                         </span>{" "}
                         {purchase.studentEmail}
-                      </p>
-                      <p>
+                      </p> */}
+                      {/* <p>
                         <span className="font-semibold text-[#082f72]">
                           Whatsapp Number:
                         </span>{" "}
                         {purchase.whatsappNumber}
-                      </p>
+                      </p> */}
 
                       {/* Sibling Information */}
                       {purchase.siblings && purchase.siblings.length > 0 && (
@@ -519,7 +586,7 @@ const Orders = () => {
                         <span className="font-semibold text-[#082f72]">
                           Class Time In BD:
                         </span>{" "}
-                        {purchase.time || "N/A"}
+                        {formatTimeForDisplay(purchase)}
                       </p>
                       <p>
                         <span className="font-semibold text-[#082f72]">
@@ -530,18 +597,18 @@ const Orders = () => {
                           : purchase.selectedDays || "N/A"}
                       </p>
 
-                      <p>
+                      {/* <p>
                         <span className="font-semibold text-[#082f72]">
                           Present Address:
                         </span>{" "}
                         {purchase.presentAddress || "N/A"}
-                      </p>
-                      <p>
+                      </p> */}
+                      {/* <p>
                         <span className="font-semibold text-[#082f72]">
                           Permanent Address:
                         </span>{" "}
                         {purchase.permanentAddress || "N/A"}
-                      </p>
+                      </p> */}
 
                       <div className="mt-3 flex gap-1">
                         <label className="font-semibold text-[#082f72] block mb-1">
@@ -647,7 +714,7 @@ const Orders = () => {
                       Student Information
                     </h5>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Student Name
@@ -771,7 +838,8 @@ const Orders = () => {
                   {/* Tutor Assignment Section */}
                   <div className="md:col-span-2 mt-4">
                     <h5 className="font-medium text-[#082f72] mb-2 border-b pb-1 flex items-center gap-2">
-                      <MdAssignment className="text-[#082f72]" /> Tutor Assignment
+                      <MdAssignment className="text-[#082f72]" /> Tutor
+                      Assignment
                     </h5>
                   </div>
 
@@ -881,70 +949,56 @@ const Orders = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Class Time
-                    </label>
-                    <input
-                      type="text"
-                      name="time"
-                      value={editFormData.time}
-                      onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
-                    />
-                  </div>
-
                   {/* Time Selection */}
-                  <div className="md:col-span-2 grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Hour
-                      </label>
+                  <div className="md:col-span-2 space-y-3">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Preferred Class Time{" "}
+                      <span className="text-red-500">(Bangladeshi Time) *</span>
+                    </label>
+                    <div className="flex flex-wrap items-center gap-3">
                       <select
                         name="selectedHour"
                         value={editFormData.selectedHour}
                         onChange={handleInputChange}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                        required
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#082f72] focus:border-[#082f72]"
                       >
-                        {Array.from({ length: 12 }, (_, i) => i + 1).map((hour) => (
-                          <option key={hour} value={hour}>
-                            {hour}
-                          </option>
-                        ))}
+                        {Array.from({ length: 12 }, (_, i) => i + 1).map(
+                          (hour) => (
+                            <option key={hour} value={hour}>
+                              {hour}
+                            </option>
+                          )
+                        )}
                       </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Minute
-                      </label>
+                      <span className="text-gray-700">:</span>
                       <select
                         name="selectedMinute"
                         value={editFormData.selectedMinute}
                         onChange={handleInputChange}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                        required
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#082f72] focus:border-[#082f72]"
                       >
                         <option value="00">00</option>
                         <option value="15">15</option>
                         <option value="30">30</option>
                         <option value="45">45</option>
                       </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        AM/PM
-                      </label>
                       <select
                         name="ampm"
                         value={editFormData.ampm}
                         onChange={handleInputChange}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
+                        required
+                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#082f72] focus:border-[#082f72]"
                       >
                         <option value="AM">AM</option>
                         <option value="PM">PM</option>
                       </select>
                     </div>
+                    <p className="text-sm text-gray-500">
+                      Selected time: {editFormData.selectedHour}:
+                      {editFormData.selectedMinute} {editFormData.ampm}
+                    </p>
                   </div>
 
                   {/* Day Selection */}
@@ -953,7 +1007,15 @@ const Orders = () => {
                       Selected Days
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => (
+                      {[
+                        "Sunday",
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday",
+                      ].map((day) => (
                         <button
                           key={day}
                           type="button"
@@ -1045,7 +1107,10 @@ const Orders = () => {
                     </div>
 
                     {editFormData.siblings.map((sibling, index) => (
-                      <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 p-3 bg-gray-50 rounded-lg">
+                      <div
+                        key={index}
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3 p-3 bg-gray-50 rounded-lg"
+                      >
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Sibling Name
@@ -1053,7 +1118,9 @@ const Orders = () => {
                           <input
                             type="text"
                             value={sibling.name || ""}
-                            onChange={(e) => handleSiblingChange(index, "name", e.target.value)}
+                            onChange={(e) =>
+                              handleSiblingChange(index, "name", e.target.value)
+                            }
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
                           />
                         </div>
@@ -1065,7 +1132,13 @@ const Orders = () => {
                             <input
                               type="email"
                               value={sibling.email || ""}
-                              onChange={(e) => handleSiblingChange(index, "email", e.target.value)}
+                              onChange={(e) =>
+                                handleSiblingChange(
+                                  index,
+                                  "email",
+                                  e.target.value
+                                )
+                              }
                               className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#082f72]"
                             />
                             <button
@@ -1108,9 +1181,25 @@ const Orders = () => {
                     >
                       {isSubmitting ? (
                         <>
-                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          <svg
+                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
                           </svg>
                           Saving...
                         </>
