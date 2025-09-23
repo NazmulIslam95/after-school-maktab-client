@@ -81,8 +81,8 @@ export const router = createBrowserRouter([
         element: <CourseDetails />,
         loader: ({ params }) =>
           fetch(
-            // `https://after-school-maktab-server.vercel.app/courses/${params.id}`
-            `http://localhost:5000/courses/${params.id}`
+            `https://after-school-maktab-server.vercel.app/courses/${params.id}`
+            // `http://localhost:5000/courses/${params.id}`
           ),
       },
       {
@@ -90,8 +90,8 @@ export const router = createBrowserRouter([
         element: <TutorDetails />,
         loader: ({ params }) =>
           fetch(
-            // `https://after-school-maktab-server.vercel.app/tutor/${params.id}`
-            `http://localhost:5000/tutor/${params.id}`
+            `https://after-school-maktab-server.vercel.app/tutor/${params.id}`
+            // `http://localhost:5000/tutor/${params.id}`
           ),
       },
       {
@@ -186,8 +186,8 @@ export const router = createBrowserRouter([
         element: <StudentDetails />,
         loader: ({ params }) =>
           fetch(
-            // `https://after-school-maktab-server.vercel.app/user/${params.email}`
-            `http://localhost:5000/users/${params.email}`
+            `https://after-school-maktab-server.vercel.app/users/user/${params.email}`
+            // `http://localhost:5000/users/user/${params.email}`
           ),
       },
     ],

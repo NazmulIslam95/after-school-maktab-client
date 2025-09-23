@@ -7,7 +7,6 @@ import useAllPurchase from "../../../CustomHooks/useAllPurchase";
 import useAllTutors from "../../../CustomHooks/useAllTutors";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
-import { FaDeleteLeft } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 
 const Orders = () => {

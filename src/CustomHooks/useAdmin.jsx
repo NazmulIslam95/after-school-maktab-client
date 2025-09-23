@@ -14,7 +14,7 @@ const useAdmin = () => {
     enabled: !!user?.email && !loading, // only run when user.email is available and not loading
     queryKey: ["isAdmin", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users/isAdmin");
+      const res = await axiosSecure.get("/user_isAdmin");
       return res.data.admin;
     },
   });

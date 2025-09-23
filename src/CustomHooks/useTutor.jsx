@@ -14,7 +14,7 @@ const useTutor = () => {
     enabled: !!user?.email && !loading,
     queryKey: ["isTutor", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users/isTutor");
+      const res = await axiosSecure.get("/user_isTutor");
       return res.data?.tutor ?? false;
     },
   });
