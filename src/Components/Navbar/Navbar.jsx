@@ -207,9 +207,9 @@ const Navbar = () => {
               <Link to="https://www.instagram.com/after_school_maktab/#" target="_blank" rel="noreferrer">
                 <FaInstagram />
               </Link>
-              {/* <Link to="https://youtube.com" target="_blank" rel="noreferrer">
+              <Link to="https://youtube.com" target="_blank" rel="noreferrer">
                 <FaYoutube />
-              </Link> */}
+              </Link>
               {/* Language toggle */}
               <label className="cursor-pointer flex items-center gap-2">
                 <span className="text-white text-xs font-semibold">
