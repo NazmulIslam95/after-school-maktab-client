@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { WiSunrise } from "react-icons/wi";
 import { LuSunMoon } from "react-icons/lu";
 import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
-import { FaChalkboardTeacher, FaFacebookF, FaYoutube } from "react-icons/fa";
+import { FaChalkboardTeacher, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import axios from "axios";
 import { CiSettings, CiUser } from "react-icons/ci";
 import useAdmin from "../../CustomHooks/useAdmin";
@@ -12,6 +12,7 @@ import { RxDashboard } from "react-icons/rx";
 import useTutor from "../../CustomHooks/useTutor";
 import { useTranslation } from "react-i18next";
 import useAuth from "../../CustomHooks/useAuth";
+import { FaFacebook } from "react-icons/fa6";
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -201,6 +202,10 @@ const Navbar = () => {
                 rel="noreferrer"
               >
                 <FaFacebookF />
+                {/* <FaFacebook/> */}
+              </Link>
+              <Link to="https://www.instagram.com/after_school_maktab/#" target="_blank" rel="noreferrer">
+                <FaInstagram />
               </Link>
               {/* <Link to="https://youtube.com" target="_blank" rel="noreferrer">
                 <FaYoutube />
