@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import "./i18n";
 import "../src/index.css";
+import GTMPageViewTracker from "./CustomHooks/GTMPageViewTracker";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <RouterProvider router={router}>
+          <GTMPageViewTracker />
+        </RouterProvider>
         <ToastContainer />
       </AuthProvider>
     </QueryClientProvider>

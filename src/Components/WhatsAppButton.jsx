@@ -6,9 +6,9 @@ const WhatsAppButton = () => {
       href="https://wa.me/8801787110752"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition transform hover:scale-110"
+      className="fixed bottom-20 md:bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-2 md:p-3 text-2xl rounded-full shadow-lg transition transform hover:scale-110"
     >
-      <FaWhatsapp size={28} />
+      <FaWhatsapp />
     </a>
   );
 };
